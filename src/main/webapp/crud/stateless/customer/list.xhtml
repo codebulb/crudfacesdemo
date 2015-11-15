@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch"
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Stateless Customer overview - CrudFaces showcase</title>
+        <h:outputStylesheet library="css" name="bootstrap-theme.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap-select.min.css"/>
+        <h:outputScript library="js" name="bootstrap.min.js" />
+        <h:outputScript library="js" name="bootstrap-select.min.js" />
+        <h:outputStylesheet name="css/font-awesome.min.css" />
+        <h:outputStylesheet library="css" name="page.css" />
+        
+        <!-- Syntax Highlighter -->
+        <h:outputStylesheet library="css" name="shCore.css" />
+        <h:outputStylesheet library="css" name="shThemeDefault.css" />
+        <h:outputScript library="js" name="shCore.js" />
+        <h:outputScript library="js" name="shBrushXml.js" />
+        <h:outputScript library="js" name="shBrushJava.js" />
+        <h:outputScript library="js" name="shBrushPlain.js" />
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewAction action="#{customerController.initEntities}"/>
+        </f:metadata>
+        
+        <div class="container-fluid">
+            
+        <p:button outcome="/crud/stateless/index.xhtml" value="Back"/>
+        
+        <c:set var="controller" value="#{customerController}"/>
+    
+    <h:form id="tableForm">
+        <p:remoteCommand name="updateTable" update="table" />
+        
+        <o:resolveComponent name="deleteSelectedActionComp" for="table:deleteSelectedAction"/>
+        <p:hotkey bind="del" handler="$('##{deleteSelectedActionComp.clientId.replaceAll(':', '\\\\\\\\:')}').click();" />
+        
+        <p:messages id="messages"/>
+
+        <p:dataTable id="table" widgetVar="tableWidget" value="#{controller.entities}" var="item"
+                     emptyMessage="#{I18N['info.dataTable.empty']}"
+                     sortMode="multiple" 
+                     selection="#{controller.selectedEntity}" rowKey="#{item}"
+                     rows="5" paginator="true">
+            
+            <p:ajax event="rowSelect" update="selectedForm deleteSelectedAction" />
+            <p:ajax event="rowUnselect" update="selectedForm deleteSelectedAction" />
+            <p:ajax event="rowSelectCheckbox" update="selectedForm deleteSelectedAction" />
+            <p:ajax event="rowUnselectCheckbox" update="selectedForm deleteSelectedAction" />
+            <p:ajax event="toggleSelect" update="selectedForm deleteSelectedAction" />
+            <p:ajax event="rowSelectRadio" update="selectedForm deleteSelectedAction" />
+
+            <p:column selectionMode="single" style="width: 60px"/>
+
+            <p:column headerText="#{I18N['id']}" sortBy="#{item.id}" style="width: 60px">
+                <h:outputText value="#{item.id}"/>
+            </p:column>
+            <p:column headerText="#{I18N['firstName']}" sortBy="#{item.firstName}"
+                      filterBy="#{item.firstName}" filterValue="#{controller.filterValues.firstName}">
+                <h:outputText value="#{item.firstName}"/>
+            </p:column>
+            <p:column headerText="#{I18N['lastName']}" sortBy="#{item.lastName}" filterBy="#{item.lastName}">
+                <h:outputText value="#{item.lastName}"/>
+            </p:column>
+            
+            <p:column headerText="#{I18N['actions']}" class="text-right" style="width: 330px">
+                <p:commandLink id="viewAction" action="#{controller.setSelectedEntity(item)}" class="btn btn-default cf-row-action-button"
+                               actionListener="#{controller.setEdit(false)}"
+                               update="table selectedForm">
+                    <span class="fa fa-eye"></span> #{I18N['show']}
+                </p:commandLink>
+                <p:commandLink id="editAction" action="#{controller.setSelectedEntity(item)}" class="btn btn-default cf-row-action-button"
+                               actionListener="#{controller.setEdit(true)}"
+                               update="table selectedForm">
+                    <span class="fa fa-pencil"></span> #{I18N['edit']}
+                </p:commandLink>
+                <p:commandLink id="deleteAction" action="#{controller.deleteEntity(item.id)}" class="btn btn-danger cf-row-action-button"
+                               update="table selectedForm"
+                               onsuccess="PF('tableWidget').clearFilters();PF('tableWidget').filter();">
+                    <span class="fa fa-trash-o"></span> #{I18N['delete']}
+                </p:commandLink>
+            </p:column>
+            
+            <f:facet name="footer">
+                <p:commandButton id="resetSelectionAction" value="#{I18N['selection.clear']}" 
+                                 action="#{controller.setEdit(true)}"
+                                 actionListener="#{controller.unsetSelectedEntity}"
+                                 process="table"
+                                 update="@form selectedForm"/>
+                <p:commandButton id="resetFilterAction" value="#{I18N['filters.reset']}" 
+                                 update="@none" onsuccess="PF('tableWidget').clearFilters();PF('tableWidget').filter();"/>
+                <p:commandLink id="deleteSelectedAction" action="#{controller.deleteSelectedEntities}" 
+                               disabled="#{empty controller.selectedEntities}" class="btn btn-danger"
+                               update="table selectedForm"
+                               oncomplete="PF('tableWidget').clearFilters();PF('tableWidget').filter();">
+                    <span class="fa fa-trash"></span> #{I18N['delete.selected']}
+                </p:commandLink>
+            </f:facet>
+        </p:dataTable>
+        
+        <demo:info id="infoResetSelection" title="Reset selection">
+            <p>Reset the dataTable selection like so:</p>
+            <pre class="brush:xml">
+&lt;p:commandButton id=&quot;resetSelectionAction&quot; value=&quot;\#{I18N['selection.clear']}&quot; 
+                 action=&quot;\#{controller.setEdit(true)}&quot;
+                 actionListener=&quot;\#{controller.unsetSelectedEntity}&quot;
+                 process=&quot;table&quot;
+                 update=&quot;@form selectedForm&quot;/&gt;
+            </pre>
+        </demo:info>
+        
+        <demo:info id="infoResetFilter" title="Reset filter">
+            <p>Reset the dataTable filter like so:</p>
+            <pre class="brush:xml">
+&lt;p:commandButton id=&quot;resetFilterAction&quot; value=&quot;\#{I18N['filters.reset']}&quot; 
+	update=&quot;@none&quot; onsuccess=&quot;PF('tableWidget').clearFilters();PF('tableWidget').filter();&quot;/&gt;
+            </pre>
+        </demo:info>
+    </h:form>
+
+    <h:form id="selectedForm" >
+        <demo:info id="infoNewEntity" title="Ready for a new entity">
+            <p>The <code>CrudController</code>’s <code>newEntity</code> property always points to a new,
+            ready-to-be-persisted entity. Use this property to get a reference to a new entity without
+            forcing the user to click a button first in order to instantiate a new entity.</p>
+            <p>In this demo application, this is used to dynamically control whether the selected entity
+            is edited or a new one is created:</p>
+            <pre class="brush:xml">
+&lt;c:set var=&quot;entity&quot; value=&quot;\#{not empty controller.selectedEntity ? controller.selectedEntity : controller.newEntity}&quot;/&gt;
+            </pre>
+        </demo:info>
+        
+        <demo:info id="infoReadOnly" title="Read-only mode">
+            <p>Use the <code>CrudController</code>’s <code>edit</code> flag to control 
+                whether the mask is in “edit” or “read-only mode”, and use AJAX to switch the flag.</p>
+            <pre class="brush:xml">
+&lt;cf:readOnly disabled=&quot;\#{controller.edit}&quot;&gt;
+    &lt;!-- your components --&gt;
+&lt;/cf:readOnly&gt;
+            </pre>
+            <p>Also, don't forget to show / hide the correct buttons. </p>
+        </demo:info>
+        <c:set var="entity" value="#{not empty controller.selectedEntity ? controller.selectedEntity : controller.newEntity}"/>
+        
+        <div class="container-fluid">
+            <cf:readOnly disabled="#{controller.edit}">
+                <cf:formLayout>
+                    <p:outputLabel for="firstName" value="#{I18N['firstName']}"/>
+                    <p:inputText id="firstName" value="#{entity.firstName}" widgetVar="input1Widget"/>
+                    <p:message for="firstName"/>
+
+                    <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
+                    <p:inputText id="lastName" value="#{entity.lastName}"/>
+                    <p:message for="lastName"/>
+
+                    <p:commandButton styleClass="btn-primary" id="saveAction" value="#{I18N['save']}" 
+                                     a:stealth="#{not controller.edit}"
+                                     action="#{controller.saveSelectedOrNewEntity}" update="tableForm @form"
+                                     onsuccess="PF('tableWidget').filter();"/>
+                    <p:commandButton value="#{I18N[empty entity.id ? 'clear' : 'reset']}"
+                                     a:stealth="#{not controller.edit}"
+                                     update="@form tableForm:messages" process="@this">
+                        <p:resetInput target="@form" />
+                    </p:commandButton>
+                    <p:commandLink id="deleteAction" value="#{I18N['delete']}" action="#{controller.deleteSelectedEntity}" 
+                                   a:stealth="#{empty entity.id or not controller.edit}"
+                                   class="btn btn-danger" update="tableForm @form" process="@this"
+                                   onsuccess="PF('tableWidget').filter();">
+                    </p:commandLink>
+                    <p:commandButton id="cancelAction" value="#{I18N['cancel']}" action="#{controller.setEdit(true)}"
+                                     actionListener="#{controller.unselectAll()}"
+                                     a:stealth="#{empty entity.id}"
+                                     update="tableForm @form" process="@this"/>
+                </cf:formLayout>
+            </cf:readOnly>
+        </div>
+        <demo:info id="infoReset" title="Reset / clear inputs">
+            <p>In order to clear / reset the input mask, no backing bean method call is necessary:</p>
+            <pre class="brush:xml">
+&lt;p:commandButton value=&quot;\#{I18N[empty entity.id ? 'clear' : 'reset']}&quot;
+                 a:stealth=&quot;\#{not controller.edit}&quot;
+                 update=&quot;@form tableForm:messages&quot; process=&quot;@this&quot;&gt;
+    &lt;p:resetInput target=&quot;@form&quot; /&gt;
+&lt;/p:commandButton&gt;
+            </pre>
+            <ul>
+                <li><code>update=&quot;@form tableForm:messages&quot;</code> repaints the <code>&lt;form&gt;</code> and the <code>&lt;messages&gt;</code></li>
+                <li><code>&lt;p:resetInput target=&quot;@form&quot; /&gt;</code> purges previous validation messages</li>
+                <li><code>process=&quot;@this&quot;&gt;</code> makes sure <code>&lt;p:resetInput&gt;</code> is executed</li>
+            </ul>
+        </demo:info>
+    </h:form>
+            
+    </div>
+    </h:body>
+    <script type="text/javascript">SyntaxHighlighter.defaults['toolbar'] = false;SyntaxHighlighter.all()</script>
+</html>

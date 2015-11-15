@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">StyleClassChangeRenderKit</ui:define>
+            <ui:define name="breadcrumb">
+                <li>renderkit</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                A JSF RenderKit which implicitly attaches a client-side JavaScript-based solution to change 
+                the class attributes of HTML tags in every view; most notably, it comes with out-of-the-box 
+                support to change “PrimeFaces style” class attributes into “Bootstrap style” class attributes.
+            </ui:define>
+            <ui:define name="text">
+                <p>As the Bootstrap CSS framework is becoming a de-facto standard for
+                    modern web design, it became desirable to use this framework for
+                    component styling in JSF as well. Especially mixing it with the most
+                    popular PrimeFaces component framework however turned out to be
+                    extremely intricate as PrimeFaces comes with its own CSS styling which
+                    is implicitly applied and conflicts with Bootstrap’s styles.</p>
+                    <p>
+                    Although PrimeFaces comes with a built-in Bootstrap-like theme, it’s
+                    not fully Bootstrap-compatible and offers limited / outdated
+                    functionality only. As another option, the dedicated 
+                    <a href="http://bootsfaces.net/">BootsFaces library</a>
+                    offers wrapper components for PrimeFaces components, enhanced with
+                    Bootstrap styling. However, using this library would introduce
+                    dependency on this not-yet-completed wrapper library, building in
+                    another layer of abstraction and indirection above PrimeFaces. This is
+                    not desirable.</p>
+                    <p>
+                    CrudFaces features a client side JavaScript (jQuery) function which
+                    changes PrimeFaces components on-the-fly to become compatible with
+                    Bootstrap. In its default configuration, the StyleClassChangeRenderKit
+                    will remove conflicting PrimeFaces classes (<code>ui-…</code>) and apply Bootstrap’s
+                    classes where appropriate (e.g. <code>btn</code> for <code>&lt;commandLink&gt;</code>).</p>
+                    <p>
+                    Originally intended to be implemented as a true server-side JSF
+                    render kit, the functionality is now realized in a simple client-side
+                    JavaScript function. It is however still triggered by activating the
+                    render kit as the render kit’s sole remaining job is to implicitly activate
+                    the JavaScript function on every view both by registering it in an
+                    OmniFaces <code>&lt;o:onloadScript&gt;</code> component (to trigger it on
+                    every page load / AJAX call) and as a global <code>document.onclick()</code> function
+                    (to trigger it on any button click). This addresses the following
+                    issues a server-side implementation wouldn’t be able to address:</p>
+                    <ul>
+                      <li>Performance impact is moved to the client and potentially
+                    less severe through the use of optimized jQuery DOM manipulation
+                    functions.</li>
+                      <li>It can be retriggered whenever a PrimeFaces function
+                    manipulates the DOM again, which would re-introduce unwanted PrimeFaces
+                    styling classes again.</li>
+                      <li>Because it is built on top of vanilla jQuery functions,
+                    it’s really easy to maintain / manipulate the “style class change” rule
+                    set.</li>
+                    </ul>
+                    <p>By using a render kit as the trigger, enabling the functionality
+                    globally is still as simple as registering the render kit in web.xml.</p>
+                
+                    <h2>Usage</h2>
+                    <p>Activate the render kit in your web.xml:</p>
+                    <pre class="brush:xml">
+&lt;factory&gt;
+	&lt;render-kit-factory&gt;ch.codebulb.crudfaces.renderkit.StyleClassChangeRenderKitFactory&lt;/render-kit-factory&gt;
+&lt;/factory&gt;
+                    </pre>
+                
+                    <h2>Known restrictions</h2>
+                    <ul>
+                        <li>Only basic PrimeFaces components are supported.</li>
+                    </ul>
+                    <ul>
+                        <li>No support for customization.</li>
+                    </ul>
+                    <ul>
+                        <li>DOM manipulations which re-introduce PrimeFaces components but which aren’t
+                            triggered by an onclick() event cannot be caught; however, there is no known case where
+                            this is a problem.</li>
+                    </ul>
+                    <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
+            </ui:define>
+            
+            <ui:define name="demo">
+                The <code>StyleClassChangeRenderKit</code> is actually applied to this entire showcase demo application.
+            </ui:define>
+            
+            <ui:define name="code-tabs">
+                <p:tab title="faces-config.xml">
+                    <pre class="brush:xml">
+&lt;factory&gt;
+	&lt;render-kit-factory&gt;ch.codebulb.crudfaces.renderkit.StyleClassChangeRenderKitFactory&lt;/render-kit-factory&gt;
+&lt;/factory&gt;
+                    </pre>
+                </p:tab>
+            </ui:define>
+            
+            <ui:define name="documentation">
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/renderkit/StyleClassChangeRenderKit.java">StyleClassChangeRenderKit</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">readOnly</ui:define>
+            <ui:define name="breadcrumb">
+                <li>componenthandlers</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                A componenthandler tag which turns all (deep) nested input components
+                into &lt;h:outputText&gt; components, thus rendering the “read
+                only” equivalent.
+            </ui:define>
+            <ui:define name="text">
+                <p>Although vanilla JSF provides the <code>disabled</code> attribute for every
+                    component, this attribute still renders the component in question as 
+                    true input component, but grays it out such that the user cannot
+                    manipulate it. However, this does not cover the typical use-case of
+                    providing both a “write” and a “read” mode for a component or even an
+                    entire view as this view is expected to be presented as a true plain
+                    HTML output text. This is what is achieved by using the
+                    <code>&lt;cf:readOnly&gt;</code> tag.</p>
+                    <p>This component is realized as a simple JSF component, but with the
+                    special <code>ReadOnly</code> componenthandler attached which executes the actual
+                    transformation. Because the <code>id</code> attribute is kept if explicitly set for
+                    the original input component, it can still be targetted by e.g. an <code>&lt;outputLabel&gt;</code>, a
+                    <code>&lt;message&gt;</code>, or a <code>&lt;p:focus&gt;</code> component, hence preventing “target not found”
+                    errors.</p>
+                    <h2>Usage</h2>
+                    <p>Using the tag is somewhat similar to OmniFaces’ <code>&lt;o:massAttribute&gt;</code> tag: Just
+                    surround the component(s) in question with the tag. Of course, you can
+                    switch between input and output rendering conditionally using the
+                    component’s <code>disabled</code> attribute.</p>
+                    
+                    <h2>Known restrictions</h2>
+                    <ul>
+                        <li>Only simple text input PrimeFaces components are supported.</li>
+                    </ul>
+                    <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
+            </ui:define>
+            
+            <ui:define name="demo">
+                <ui:include src="impl/readOnly.xhtml"/>
+            </ui:define>
+            
+            <ui:define name="code-tabs">
+                <p:tab title="index.xhtml">
+                    <pre class="brush:xml">
+&lt;h:form&gt;
+	&lt;p:focus for=&quot;firstName&quot;/&gt;
+	&lt;cf:readOnly disabled=&quot;\#{not readOnlyController.readOnly}&quot;&gt;
+		&lt;cf:formLayout style=&quot;width: 50%&quot;&gt;
+			&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+			&lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{readOnlyController.entity.firstName}&quot;/&gt;
+			&lt;p:message for=&quot;firstName&quot;/&gt;
+			&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+			&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{readOnlyController.entity.lastName}&quot;/&gt;
+			&lt;p:message for=&quot;lastName&quot;/&gt;
+			&lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot; 
+							 a:stealth=&quot;\#{readOnlyController.readOnly}&quot; /&gt;
+			&lt;p:commandButton value=&quot;\#{readOnlyController.controlText}&quot;
+							 action=&quot;\#{readOnlyController.switchReadOnly()}&quot;
+							 update=&quot;@form&quot; process=&quot;@this&quot;/&gt;
+		&lt;/cf:formLayout&gt;
+	&lt;/cf:readOnly&gt;
+&lt;/h:form&gt;
+                    </pre>
+                </p:tab>
+                <p:tab title="ReadOnlyController.java">
+                    <pre class="brush:java">
+@ViewScoped
+@Named
+public class ReadOnlyController implements Serializable {
+    private boolean readOnly = false;
+    private Customer entity = new Customer();
+    
+    @PostConstruct
+    protected void initEntity() {
+        entity.setFirstName(&quot;Org&quot;);
+    }
+    
+    public void switchReadOnly() {
+        readOnly = !readOnly;
+    }
+    
+    public String getControlText() {
+        return readOnly ? &quot;Make editable&quot; : &quot;Make read-only&quot;;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public Customer getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Customer entity) {
+        this.entity = entity;
+    }
+}
+                    </pre>
+                </p:tab>
+            </ui:define>
+            
+            <ui:define name="documentation">
+                <strong>VDL</strong>
+                <ul>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/vdldoc/cf/readOnly.html">cf:readOnly</a></code></li>
+                </ul>
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/component/ReadOnly.java">component.ReadOnly</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/componenthandler/ReadOnly.java">componenthandler.ReadOnly</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

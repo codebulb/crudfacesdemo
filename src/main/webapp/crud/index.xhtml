@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">CRUD</ui:define>
+            <ui:define name="breadcrumb">
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                CrudFaces provides a simple, lean framework to build best-practices compliant 
+                (optionally RESTful) CRUD applications in only a few lines of Java code.
+            </ui:define>
+            <ui:define name="text">
+                <p>Alongside a range of independently useful general-purpose components,
+                CrudFaces provides a simple, lean framework to build (optionally
+                RESTful) CRUD JSF applications based on common best practices.
+                Having a basic CRUD implementation in place means that you can an any
+                entity type:</p>
+                <ul>
+                  <li><b>Create (C)</b> new entities</li>
+                  <li><b>Read (R)</b> persistent entities from the persistence storage</li>
+                  <li><b>Update (U)</b> entities in the persistence storage</li>
+                  <li><b>Delete (D)</b> entities from the persistence storage</li>
+                </ul>
+                <p>Building your application around a CRUD centric approach brings a
+                couple of advantages:</p>
+                <ul>
+                  <li>The service interface is very simplistic, lean and
+                self-documenting</li>
+                  <li>The business logic resides in the model rather than in the
+                service interface which matches well an object-oriented language like
+                Java</li>
+                  <li>Because the service interface stays the same for all entities, we 
+                    can make excessive use of abstraction through inheritance and generics</li>
+                  <li>This architecture matches well a best practices compliant
+                RESTful implementation where the four CRUD actions are really 
+                matched against HTTP verbs.</li>
+                </ul>
+                <p>This best practices architecture is based on three central artifacts
+                for which CrudFaces provides an abstract generic base implementation:</p>
+                <ul>
+                    <li><code>CrudEntity</code>: the entity model</li>
+                  <li><code>CrudService</code>: the persistence service</li>
+                  <li><code>CrudController</code>: the controller backing bean</li>
+                </ul>
+                <p>In a CRUD application, the relation between these artifacts is 1 : 1 :
+                1; you will thus build a service and a controller for every entity.
+                Thanks to the level of abstraction provided by CrudFaces, this is a
+                matter of about 30 lines of code:</p>
+                <ul>
+                    <li><code><h:link outcome="/crud/crudEntity.xhtml">CrudEntity</h:link></code> makes sure your entity implements an auto-ID
+                generation strategy</li>
+                    <li><code><h:link outcome="/crud/crudService.xhtml">CrudService</h:link></code> implements basic persistence storage access
+                (through an EntityManager) for the four CRUD operations</li>
+                    <li><code><h:link outcome="/crud/crudController.xhtml">CrudController</h:link></code> implements a fully-featured controller
+                backing bean for use with either a <code>&lt;form&gt;</code> for editing a
+                single component or a PrimeFaces <code>&lt;p:dataTable&gt;</code> for
+                editing all entities in the persistence storage including basic
+                out-of-the-box support for sorting, filtering, and pagination.</li>
+                </ul>
+                <p>Check out the documentation of these classes to see how to implement
+                them for use with your business entity.
+                As far as the actual XHTML view is concerned, CrudFaces supports three
+                ways of building a view:</p>
+                <ul>
+                  <li>a <b><h:link outcome="/crud/restful/index.xhtml">RESTful, stateless separate master / details view</h:link></b>. This
+                is the preferred choice if you want to have a separate master view
+                (<code>&lt;p:dataTable&gt;</code> with overview for all entities) with a navigation to a
+                detail view (<code>&lt;form&gt;</code> for inspecting / editing a single entity).
+                It supports bookmarking, forward/back button navigation, and true RESTful URLs
+                with PrettyFaces. It can be optionally implemented using a <code>@RequestScoped</code> <code>CrudController</code>.</li>
+                  <li>a <b><h:link outcome="/crud/stateless/index.xhtml">stateless combined master / detail view</h:link></b>. Here, the detail
+                view of the currently “selected” entity is part of the master view
+                (e.g. in a dialog box). Any CRUD action on an entity 
+                immediately updates the persistence storage.</li>
+                  <li>a <b><h:link outcome="/crud/stateful/index.xhtml">stateful combined master / detail view</h:link></b>. Here again, the
+                detail view of the currently “selected” entity is part of the master
+                view (e.g. in a dialog box). Any CRUD action on an entity
+                immediately synchronizes between master and detail view, but the
+                changes must be explicitly synchronized with the persistence storage
+                (e.g through an “apply” button). This is e.g. an ideal choice when you
+                have a parent entity and changes to its child entities should be saved
+                as a whole, not on a per-child basis.</li>
+                </ul>
+                <p>Because CrudController supports all three view flavors, the only
+                difference (and the only actual work for the developer) is their
+                implementation in the XHTML Facelets view.<p>
+                </p>This documentation also features a tutorial for every one of these view
+                flavors. Check them out to see which view type best suits your business
+                requirements and how to implement it.</p>
+            </ui:define>
+            <ui:define name="info-panels"/>
+            <ui:define name="documentation-panel"/>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,12 @@
+/*.grids-example > * {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #ddd #ddd #ddd #ddd;
+    border-image: none;
+    border-style: solid solid solid solid;
+    border-width: 1px 1px 1px 1px;
+    font-family: Consolas,"Liberation Mono",Courier,monospace;
+    padding: 1em 0;
+}*/

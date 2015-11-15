@@ -1,0 +1,59 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    padding-top: 50px;
+    margin-bottom: 60px;
+}
+
+/* format footer as in http://getbootstrap.com/examples/sticky-footer-navbar/ */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #f5f5f5;
+    margin-top: 10px;
+}
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.footer > .container > p {
+    margin: 0;
+}
+/* fix anchor jump as in http://stackoverflow.com/a/13138463 */
+h1 { position:relative; }
+h1 span{ position:absolute; top:-70px;}
+
+/* auto-format images */
+.nav .fa, .panel-heading .fa {
+    margin-right: 8px;
+}
+.navbar-brand > img {
+    display: inline-block;
+    margin-right: 12px;
+}
+
+/* format non-link navbar items */
+.navbar > .container .navbar-brand {
+    color: #fff;
+}
+.navbar-nav > li > div {
+    color: #fff;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    line-height: 20px;
+    display: block;
+    position: relative;
+}
+
+/* resolve name clash between bootstrap and syntaxhighlighter "container" */
+.syntaxhighlighter > table > tbody > tr > td.code > div.container::after, .syntaxhighlighter > table > tbody > tr > td.code > div.container::before {
+    content: none;
+    display: inline;
+}
+
+.toggle-header {
+    cursor: pointer;
+}

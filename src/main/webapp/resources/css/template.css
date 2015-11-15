@@ -1,0 +1,33 @@
+.sidebar li.title {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 20px;
+    background-color: #c7c7c7;
+}
+
+.nav.nav-sidebar > li > a {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+    background-color: #ddd;
+    color: black;
+}
+
+.nav.nav-sidebar > li.title > a {
+    padding: 0px;
+}
+
+.nav.nav-sidebar > li.title > a:hover, .nav.nav-sidebar > li.title > a:focus {
+    background-color: #ddd;
+}
+
+.nav.nav-sidebar > li.title:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.collapsing {
+    transition: height 0.1s;
+}

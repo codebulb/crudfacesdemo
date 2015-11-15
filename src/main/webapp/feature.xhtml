@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:body>
+        <ui:composition template="/template.xhtml">
+            <ui:define name="content">
+                <ol class="breadcrumb">
+                    <li><a href="#{request.contextPath}/">Home</a></li>
+                    <ui:insert name="breadcrumb"/>
+                    <li class="active"><ui:insert name="title"/></li>
+                </ol>
+
+                <h1><ui:insert name="title"/></h1>
+
+                <p class="lead">
+                <ui:insert name="p-intro"/>
+                </p>
+                <ui:insert name="text"/>
+
+                <ui:insert name="info-panels">
+                    <ui:insert name="demo-panel">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">demo</div>
+                            <div class="panel-body cf-demo-demo">
+                                <ui:insert name="demo"/>
+                            </div>
+                        </div>
+                    </ui:insert>
+
+                    <ui:insert name="code-panel">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">code</div>
+                            <div class="panel-body">
+                                <ui:insert name="code">
+                                    <p:tabView>
+                                        <ui:insert name="code-tabs"/>
+                                    </p:tabView>
+                                </ui:insert>
+                            </div>
+                        </div>
+                    </ui:insert>
+                </ui:insert>
+
+                <ui:insert name="documentation-panel">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">documentation</div>
+                        <div class="panel-body">
+                            <ui:insert name="documentation"/>
+                        </div>
+                    </div>
+                </ui:insert>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

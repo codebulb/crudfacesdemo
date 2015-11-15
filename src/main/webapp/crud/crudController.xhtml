@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">CrudController</ui:define>
+            <ui:define name="breadcrumb">
+                <li><h:link outcome="/crud/index.xhtml" value="CRUD"/></li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                An abstract generic base implementation of a CRUD JSF backing bean “controller” 
+                which implements a fully REST-compliant JSF controller with out-of-the-box support 
+                for master / detail pages and PrimeFaces dataTable components.
+            </ui:define>
+            <ui:define name="text">
+                <p>In order to create a CRUD controller for an entity type, make sure the
+                    entity implements <code>CrudIdentifiable</code> (or inherits from <code>CrudEntity</code>),
+                    implement <code>CrudController</code> for the entity and register it as a CDI or JSF
+                    bean in the container (depending on beans.xml <code>bean-discovery-mode</code>, 
+                    explicit registration may not be necessary), and in the JSF EL (e.g. though <code>@Named</code>).</p>
+                <p>For this demo application, the controller backing bean implementation for the <code>Customer</code>
+                entity extends <code>CrudController</code> like this:</p>
+                <pre class="brush:java">
+@ViewScoped
+@Named
+public class CustomerController extends CrudTableController&lt;Customer&gt; {
+    @Inject
+    private CustomerService service;
+    
+    @Override
+    protected CrudService&lt;Customer&gt; getService() {
+        return service;
+    }
+}
+                </pre>
+                <ul>
+                  <li>Within the <code>getService()</code> method, return the concrete <code>CrudService</code> for the
+                entity type in question which you should dependency-inject into the
+                controller.</li>
+                </ul>
+                <p>Yes, you really only need to implement this single method, and you get
+                    best practices CRUD operations for a RESTful PrimeFaces-based JSF
+                    application out-of-the-box.
+                </p>
+                <p>CrudController supports <h:link outcome="/crud/index.xhtml">three ways of building a view</h:link>:</p>
+                <ul>
+                  <li>a <h:link outcome="/crud/restful/index.xhtml">RESTful, stateless separate master / details view</h:link></li>
+                  <li>a <h:link outcome="/crud/stateless/index.xhtml">stateless combined master / detail view</h:link></li>
+                  <li>a <h:link outcome="/crud/stateful/index.xhtml">stateful combined master / detail view</h:link></li>
+                </ul>
+                <p>This documentation features a tutorial for every one of these view
+                flavors. Check them out to see which view type best suits your business
+                requirements and how to implement it.</p>
+                <h2>Known restrictions</h2>
+                <ul>
+                    <li>Only basic support for PrimeFaces features. No support for "inline edit" yet.</li>
+                </ul>
+                <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
+            </ui:define>
+            
+            <ui:define name="demo-panel"/>
+            <ui:define name="code-panel"/>
+            <ui:define name="documentation">
+                <strong>API</strong>
+                <ul>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/controller/CrudController.html">CrudController</a></code></li>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/controller/CrudTableController.html">CrudTableController</a></code></li>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/controller/SimpleCrudController.html">SimpleCrudController</a></code></li>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/controller/Url.html">Url</a></code></li>
+                </ul>
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/controller/CrudController.java">CrudController</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/controller/CrudTableController.java">CrudTableController</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/controller/SimpleCrudController.java">SimpleCrudController</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/controller/Url.java">Url</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

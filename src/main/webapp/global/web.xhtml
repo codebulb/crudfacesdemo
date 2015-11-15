@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">web.xml context-params</ui:define>
+            <ui:define name="breadcrumb">
+                <li>global overrides</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                CrudFaces initializes a web application with more reasonable, practice-proven default settings.
+            </ui:define>
+            <ui:define name="text">
+                <p>CrudFaces comes out-of-the-box with a few JSF application
+                    configurations which derive from vanilla JSF configuration, but are
+                    considered best-practices and more useful for most JSF projects than
+                    are the actual JSF defaults.</p>
+                    <p>The following default context-param elements are added to the web.xml configuration:</p>
+                    <ul>
+                        <li><code>javax.faces.FACELETS_SKIP_COMMENTS</code> = <code>true</code> to disable the
+                    potentially harmful rendering of XHTML comments</li>
+                      <li><code>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</code>
+                    = <code>true</code> to allow <code>!= null</code> (<code>@NotNull</code>) checks rather than is empty
+                    (<code>@NotEmpty</code>) checks for input Strings.</li>
+                      <li><code>primefaces.THEME</code> = <code>none</code> as a preconfiguration step to use
+                          <code><h:link outcome="/renderkit/styleClassChangeRenderKit.xhtml">StyleClassChangeRenderKit</h:link></code>.</li>
+                    </ul>
+                    <p>Of course, you can override these values again in your own web.xml.</p>
+            </ui:define>
+            
+            <ui:define name="demo-panel"/>
+            <ui:define name="code-panel"/>
+            <ui:define name="documentation">
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/resources/META-INF/web-fragment.xml">web-fragment.xml</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">I18N</ui:define>
+            <ui:define name="breadcrumb">
+                <li>managedbeans</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                A helper bean for I18N (localization) String lookup from within EL which allows accessing localization keys 
+                on any registered resource-bundle, not just a resource-bundle with a given “var” id.
+            </ui:define>
+            <ui:define name="text">
+                <p>Through the <code>\#{I18N}</code> EL-enabled bean, you can lookup I18N keys such as
+                    you would using the <code>var</code> key of a designated <code>&lt;resource-bundle&gt;</code>. So instead
+                    of e.g. <code>\#{msg['save']}</code>, use <code>\#{I18N['save']}</code>.</p>
+                <p>Using the I18N bean rather than referring to a specific
+                    <code>&lt;resource-bundle&gt;</code> by its <code>var</code> offers the following advantages:</p>
+                    <ul>
+                      <li>It allows to lookup Strings in any registered
+                    <code>&lt;resource-bundle&gt;</code>. resource-bundles are consulted in the order they are
+                    registered.</li>
+                      <li>As a consequence of the above, this also allows you to use
+                    the built-in default message Strings shipped with CrudFaces alongside
+                    your own message Strings using <code>\#{I18N}</code> as a unified access interface
+                    with the ability to override CrudFaces default message Strings with
+                    your own message Strings. CrudFaces ships with default messages for
+                    many general-purpose message keys, e.g. “save” or “cancel”. See
+                    <h:link outcome="/global/message-bundle.xhtml">message-bundle</h:link> for details.</li>
+                      <li>The I18N EL bean offers a simple interface to provide up to
+                    5 message String parameters. It is far more concise than using e.g.
+                    OmniFaces’ <code>&lt;of:format…&gt;</code> EL functions with a message lookup.</li>
+                      <li><code>\#{I18N}</code> auto-capitalizes the main message, but not message parameters.
+                      This promotes re-using message Strings in labels / buttons (capitalized) and
+                      as parameters (non capitalized)</li>
+                      <li>In case you don’t want auto-capitalizing: There is the
+                    <code>\#{i18n}</code> bean (mind the caps!) which works exactly as <code>\#{I18N}</code>, but
+                    without auto-capitalization.</li>
+                    </ul>
+            </ui:define>
+            <ui:define name="demo"><ui:include src="impl/i18n.xhtml"/></ui:define>
+            <ui:define name="code-tabs">
+                <p:tab title="index.xhtml">
+                    <pre class="brush:xml">
+&lt;p&gt;Retrieve a label: \#{I18N['customer']}&lt;/p&gt;
+&lt;p&gt;Retrieve a key provided by CrudFaces: \#{I18N['save']}&lt;/p&gt;
+&lt;p&gt;Build a message: \#{I18N.wi('prompt.delete.all', 'customer.p')}&lt;/p&gt;
+&lt;p&gt;Build a message with keys and objects: \#{I18N.w2('prompt.delete.n', 5, i18n['customer.p'])}&lt;/p&gt;
+                    </pre>
+                </p:tab>
+                <p:tab title="Messages.properties">
+                    <pre class="brush:text">
+customer=customer
+customer.p=customers
+
+prompt.delete.all=Do you want to delete all {0}?
+prompt.delete.n=Do you want to delete these {0} {1}?
+                    </pre>
+                </p:tab>
+            </ui:define>
+            
+            <ui:define name="documentation">
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/managedbeans/I18N.java">I18N</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/managedbeans/I18NNoCaps.java">I18NNoCaps</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

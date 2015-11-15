@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">Utility classes</ui:define>
+            
+            <ui:define name="p-intro">
+                CrudFaces provides several classes which provide useful general-purpose static util helper functionality.
+            </ui:define>
+            <ui:define name="text">
+                <p>In accordance with the “don’t reinvent the wheel” motto, CrudFaces
+                promotes re-usage of existing functionality as e.g. provided by the
+                vast amount of common “util” helper functions in OmniFaces’ helper
+                classes. In fact, CrudFaces makes intense use of these helper functions
+                to build its own functionality.</p>
+                <p>
+                Whenever a requirement is found which is not covered by Java core,
+                OmniFaces or PrimeFaces utils, but which seems to be commonly useful,
+                CrudFaces will provide its own implementation as a helper util function.</p>
+                <p>
+                So far, these util functions are covered by these three classes. In
+                general, a util class name is based on its OmniFaces util class
+                counterpart + <code>Helper</code> suffix.</p>
+                <ul>
+                  <li><code>ComponentsHelper</code>: common JSF components util methods</li>
+                  <li><code>FacesHelper</code>: common JSF util methods</li>
+                  <li><code>StringsHelper</code>: simple String util methods for which
+                including a full-blown String util library such as Apache common lang
+                seems overkill.</li>
+                </ul>
+            </ui:define>
+            
+            <ui:define name="demo-panel"/>
+            <ui:define name="code-panel"/>
+            <ui:define name="documentation">
+                <strong>API</strong>
+                <ul>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/util/ComponentsHelper.html">ComponentsHelper</a></code></li>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/util/FacesHelper.html">FacesHelper</a></code></li>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/util/StringsHelper.html">StringsHelper</a></code></li>
+                </ul>
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/util/ComponentsHelper.java">ComponentsHelper</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/util/FacesHelper.java">FacesHelper</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/util/StringsHelper.java">StringsHelper</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

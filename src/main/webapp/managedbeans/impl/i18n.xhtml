@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:cf="http://crudfaces.codebulb.ch"
+                >
+
+    <p>Retrieve a label: #{I18N['customer']}</p>
+    <p>Retrieve a key provided by CrudFaces: #{I18N['save']}</p>
+    <p>Build a message: #{I18N.wi('prompt.delete.all', 'customer.p')}</p>
+    <p>Build a message with keys and objects: #{I18N.w2('prompt.delete.n', 5, i18n['customer.p'])}</p>
+</ui:composition>

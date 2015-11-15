@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">message-bundles</ui:define>
+            <ui:define name="breadcrumb">
+                <li>global overrides</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                CrudFaces overrides several bean validation default messages with more reasonable and especially more end-user-friendly content.
+            </ui:define>
+            <ui:define name="text">
+                <p>Some of the ValidationMessages’s default messages are either very technical and end-user-unfriendly by default, 
+                    they lack a common sentence structure (e.g. some ending with a dot, others don’t), or have other design flaws.
+                    </p>
+                <p>Most prominently, the <code>javax.faces.validator.BeanValidator.MESSAGE</code> String is overridden 
+                        by CrudFaces such as to unify Apache MyFaces and Mojarra default implementation i.e. to always 
+                        include the component’s label in a validation error message.
+                    </p>
+                
+                    <h2>Known restrictions</h2>
+                    <ul>
+                        <li>Providing an explicit <code>&lt;message-bundle&gt;</code> in web.xml overrides all default messages.
+                        As a partial workaround, Bean Validation message interpolation has been tweaked that it looks up validation message keys
+                    in <code>&lt;resource-bundle&gt;</code> as well. Hence, use your <code>&lt;resource-bundle&gt;</code> to define 
+                    additional Bean Validation constraint annotation <code>message</code>s.</li>
+                    </ul>
+                    <ul>
+                        <li>Still only a very limited amount of out-of-the-box message key / value pairs provided.</li>
+                    </ul>
+                    <ul>
+                        <li>No I18N of those message keys out-of-the-box yet.</li>
+                    </ul>
+                    <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
+            </ui:define>
+            
+            <ui:define name="demo-panel"/>
+            <ui:define name="code-panel"/>
+            <ui:define name="documentation">
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/resources/META-INF/faces-config.xml">faces-config.xml</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/resources/ch/codebulb/crudfaces/ValidationMessages.properties">ValidationMessages.properties</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/resources/ch/codebulb/crudfaces/ValidationMessages_en.properties">ValidationMessages_en.properties</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

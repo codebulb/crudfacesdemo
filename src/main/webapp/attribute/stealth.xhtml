@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+          
+      xmlns:o="http://omnifaces.org/ui">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">stealth</ui:define>
+            <ui:define name="breadcrumb">
+                <li>attributes</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                A globally available component attribute which can be used as an
+                alternative to the rendered attribute, hiding the component just as
+                rendered does, but with the ability to reference to it and un-hide it
+                without the need of an umbrella component.
+            </ui:define>
+            <ui:define name="text">
+                <p>In JSF (and PrimeFaces), the <code>rendered</code> attribute is used to
+                    conditionally hide a component (i.e. not render it in the HTML
+                    outcome). A <a href="http://stackoverflow.com/q/9010734/1399395">well-known problem</a>
+                    with this feature is that as the component
+                    in question is completely removed from the output component tree,
+                    there’s no way to retrieve it again; most notably, it cannot be
+                    referenced in an ajax update in order to notify it that its <code>rendered</code>
+                    value has changed to <code>true</code> again. In practice, one needs to reference to
+                    a parent component which will then trigger re-rendering itself and of
+                    all of its child components. This is cumbersome and can lead to
+                    undesired side effects.</p><p>
+                    When using <code>a:stealth</code> instead of <code>rendered</code>, instead of completely removing the
+                    component in question from the view, an empty <code>&lt;span&gt;</code> tag
+                    will be rendered, with the <code>id</code> preserved, so it can still be properly
+                    referenced in e.g. an ajax <code>update</code> attribute.</p><p>
+                    The attribute itself is realized as a so-called pass through attribute,
+                    as introduced with JSF 2.2, belonging to the
+                    <code>xmlns:a="http://xmlns.jcp.org/jsf/passthrough"</code> namespace. As these pass
+                    through attributes are ignored by the XML validator, it won’t introduce
+                    nasty HTML warnings in your editor because of an unknown HTML attribute.</p><p>
+                    However, the attribute can also be applied as a true JSF attribute,
+                    making it eligible for use with OmniFaces’
+                    <code>&lt;o:massAttribute&gt;</code> component.</p>
+                    <p><b>Note:</b> Semantically, the <code>a:stealth</code> attribute works like a negated
+                    <code>rendered</code> attribute would, i.e. <code>rendered="true"</code> is <code>stealth="false"</code>, and vice
+                    versa. However, it accords better with the semantics of the <code>disabled</code>
+                    attribute.</p><p>
+                    Behind the scenes, the <code>a:stealth</code> attribute is interpreted by the
+                    special <code>StealthModeRenderKit</code>. As this render kit has no other side
+                    effects, it is activated by default.</p>
+                
+                    <h2>Usage</h2>
+                    <p>Declare the <code>xmlns:a="http://xmlns.jcp.org/jsf/passthrough"</code> namespace
+                    and set <code>a:stealth="true"</code> on any component to hide it and its children
+                    and render an empty span tag instead.</p>
+                    
+                    <h2>Known restrictions</h2>
+                    <ul>
+                        <li>Child components of a stealth component cannot be un-hidden again. As a workaround, use 
+                            OmniFaces’ <code>&lt;o:massAttribute&gt;</code> to apply stealth to multiple components instead of 
+                            applying it to their common parent component.</li>
+                    </ul>
+                    <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
+            </ui:define>
+            <ui:define name="demo"><ui:include src="impl/stealth.xhtml"/></ui:define>
+            <ui:define name="code-tabs">
+                <p:tab title="index.xhtml">
+                    <pre class="brush:xml">
+&lt;h:form id=&quot;rendered&quot;&gt;
+    &lt;p&gt;Vanilla JSF &lt;code&gt;rendered&lt;/code&gt;: Lost after being hidden&lt;/p&gt;
+    &lt;cf:formLayout style=&quot;width: 50%;&quot; styleClass=&quot;clearfix&quot;&gt;
+        &lt;p:outputLabel for=&quot;button&quot; value=&quot;Dangerous button:&quot;/&gt;
+        &lt;p:commandLink id=&quot;button&quot; rendered=&quot;\#{renderedController.shown}&quot; class=&quot;btn btn-default&quot; a:inline=&quot;true&quot;&gt;
+            &lt;span class=&quot;fa fa-exclamation-triangle&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt; Destroy the world!
+        &lt;/p:commandLink&gt;
+        &lt;p:outputLabel for=&quot;another&quot; value=&quot;Another component:&quot;/&gt;
+        &lt;h:outputText id=&quot;another&quot; value=&quot;\#{now}&quot;/&gt;
+        &lt;p:commandButton value=&quot;\#{renderedController.controlText}&quot; actionListener=&quot;\#{renderedController.switchShown()}&quot;
+                         process=&quot;@this&quot; update=&quot;@this button&quot;/&gt;
+    &lt;/cf:formLayout&gt;
+&lt;/h:form&gt;
+
+&lt;h:form id=&quot;renderedContainer&quot;&gt;
+    &lt;p style=&quot;margin-top: 24px;&quot;&gt;Vanilla JSF &lt;code&gt;rendered&lt;/code&gt; with update on parent container: Side effects because every child is updated&lt;/p&gt;
+    &lt;cf:formLayout id=&quot;layout&quot; style=&quot;width: 50%;&quot; styleClass=&quot;clearfix&quot;&gt;
+        &lt;p:outputLabel for=&quot;button&quot; value=&quot;Dangerous button:&quot;/&gt;
+        &lt;p:commandLink id=&quot;button&quot; rendered=&quot;\#{renderedInContainerController.shown}&quot; class=&quot;btn btn-default&quot; a:inline=&quot;true&quot;&gt;
+            &lt;span class=&quot;fa fa-exclamation-triangle&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt; Destroy the world!
+        &lt;/p:commandLink&gt;
+        &lt;p:outputLabel for=&quot;another&quot; value=&quot;Another component:&quot;/&gt;
+        &lt;h:outputText id=&quot;another&quot; value=&quot;\#{now}&quot;/&gt;
+        &lt;p:commandButton value=&quot;\#{renderedInContainerController.controlText}&quot; actionListener=&quot;\#{renderedInContainerController.switchShown()}&quot;
+                         process=&quot;@this&quot; update=&quot;layout&quot;/&gt;
+    &lt;/cf:formLayout&gt;
+&lt;/h:form&gt;
+
+&lt;h:form id=&quot;stealth&quot;&gt;
+    &lt;p style=&quot;margin-top: 24px;&quot;&gt;CrudFaces &lt;code&gt;a:stealth&lt;/code&gt;: Works&lt;/p&gt;
+    &lt;cf:formLayout style=&quot;width: 50%;&quot; styleClass=&quot;clearfix&quot;&gt;
+        &lt;p:outputLabel for=&quot;button&quot; value=&quot;Dangerous button:&quot;/&gt;
+        &lt;p:commandLink id=&quot;button&quot; a:stealth=&quot;\#{not stealthModeController.shown}&quot; class=&quot;btn btn-default&quot; a:inline=&quot;true&quot;&gt;
+            &lt;span class=&quot;fa fa-exclamation-triangle&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt; Destroy the world!
+        &lt;/p:commandLink&gt;
+        &lt;p:outputLabel for=&quot;another&quot; value=&quot;Another component:&quot;/&gt;
+        &lt;h:outputText id=&quot;another&quot; value=&quot;\#{now}&quot;/&gt;
+        &lt;p:commandButton value=&quot;\#{stealthModeController.controlText}&quot; actionListener=&quot;\#{stealthModeController.switchShown()}&quot;
+                         process=&quot;@this&quot; update=&quot;@this button&quot;/&gt;
+    &lt;/cf:formLayout&gt;
+&lt;/h:form&gt;
+                    </pre>
+                </p:tab>
+                <p:tab title="StealthModeController.java">
+                    <pre class="brush:java">
+@ViewScoped
+@Named
+public class StealthModeController implements Serializable {
+    private boolean shown;
+
+    public boolean isShown() {
+        return shown;
+    }
+
+    public void setShown(boolean shown) {
+        this.shown = shown;
+    }
+    
+    public void switchShown() {
+        shown = !shown;
+    }
+    
+    public String getControlText() {
+        return shown ? &quot;Hide dangerous button&quot; : &quot;Show dangerous button&quot;;
+    }
+}
+                    </pre>
+                </p:tab>
+                <p:tab title="RenderedController.java">
+                    <pre class="brush:java">
+@ViewScoped
+@Named
+public class RenderedController extends StealthModeController {
+    
+}
+                    </pre>
+                </p:tab>
+                <p:tab title="RenderedInContainerController.java">
+                    <pre class="brush:java">
+@ViewScoped
+@Named
+public class RenderedInContainerController extends StealthModeController {
+    
+}
+                    </pre>
+                </p:tab>
+            </ui:define>
+            
+            <ui:define name="documentation">
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/renderkit/StealthModeRenderKit.java">StealthModeRenderKit</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

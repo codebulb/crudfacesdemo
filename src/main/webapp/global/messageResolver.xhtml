@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">OmniFaces message resolver</ui:define>
+            <ui:define name="breadcrumb">
+                <li>global overrides</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                CrudFaces reconfigurates OmniFaces message resolution used by the Messages class helper methods
+                to enable lookup by message key per default.
+            </ui:define>
+            <ui:define name="text">
+                <p>When building FacesMessages with OmniFaces’ <code><a href="http://showcase.omnifaces.org/utils/Messages">Messages</a></code> class’s
+                    static helper methods, the message String provided is by default used
+                    as a hard-coded String.</p>
+                    <p>However, a real-life JSF application will most likely feature
+                    I18N-ready messages; hence, a lookup with a message key is more
+                    reasoanable than providing a hard-coded message as a String. CrudFaces
+                    <a href="http://showcase.omnifaces.org/utils/Messages">uses OmniFaces’ own configuration facilities</a> to override default
+                    message resolution with an actual message lookup.
+                    </p>
+                    <p>Here, logic from CrudFaces’ <code>FacesHelper</code> utility class is
+                    reused in order to implement a message lookup which correctly treats
+                    message-bundles from parent projects.
+                    </p>
+            </ui:define>
+            
+            <ui:define name="demo-panel"/>
+            <ui:define name="code-panel"/>
+            
+            <ui:define name="documentation">
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/ApplicationListener.java">ApplicationListener</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">RESTful view</ui:define>
+            <ui:define name="breadcrumb">
+                <li><h:link outcome="/crud/index.xhtml" value="CRUD"/></li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                A RESTful, stateless separate master / details view with support for bookmarking, 
+                forward/back button navigation, and true RESTful URLs with PrettyFaces.
+            </ui:define>
+            <ui:define name="text">
+                <p>A <code>CrudController</code> implementation can be used to implement a RESTful stateless XHTML Facelets view.</p>
+                <p>This is the preferred choice if you want to have a separate master view
+                    (<code>&lt;p:dataTable&gt;</code> with overview for all entities) with a navigation to a
+                    detail view (<code>&lt;form&gt;</code> for inspecting / editing a single entity).
+                    It supports bookmarking, forward/back button navigation, and true RESTful URLs
+                    with PrettyFaces. It can be optionally implemented using a <code>@RequestScoped</code> <code>CrudController</code>.</p>
+                <p></p>
+                <p>This implementation is based on <a href="http://www.codebulb.ch/2015/05/restful-jsf-with-post-redirect-get-part-1.html">
+                        a tutorial I wrote</a> about how to implement a best-practices compliant RESTful web application with
+                    vanilla JSF components.</p>
+                
+                    <h2>Usage</h2>
+                    <p>Use these <code>CrudController</code> methods to trigger actions:</p>
+                    <ul>
+                      <li><code>save(T)</code>: Saves the entity T</li>
+                      <li><code>delete(id)</code>: Deletes the entity with id</li>
+                      <li><code>deleteSelected()</code>: Deletes the selected entities (master view)</li>
+                    </ul>
+                    <p>
+                    In order to use CrudController as a backing bean for your RESTful
+                    master / detail view, the actual XHTML pages must be placed in the “web
+                    pages” folder of your web application like this:</p>
+                    <ul>
+                        <li>for the <b>master</b> view: <code>entity/list.xhtml</code></li>
+                        <li>for the <b>detail</b> view: <code>entity/show.xhtml</code></li>
+                    </ul>
+                    <p><code>entity</code> should be the name of your entity. In the example application,
+                    it is <code>customer</code>.</p>
+                    <p>
+                    As you can see, it’s only important that both pages are in the same
+                    folder and their names are list.xhtml and show.xhtml, respectively.</p>
+                    <p>
+                    CrudController then realizes these page URL interactions:</p>
+                    <ul>
+                      <li><code>entity/list.xhtml</code>: shows the master view</li>
+                      <li><code>entity/show.xhtml?id=1&amp;edit=true</code>: shows the detail
+                    view in edit mode for entity with id=1.</li>
+                      <li><code>entity/show.xhtml?id=1</code>: shows the detail view in read-only
+                    mode for entity with id=1.</li>
+                      <li><code>entity/show.xhtml?edit=true</code>: shows the detail view in edit
+                    mode for creating a new entity.</li>
+                      <li><code>entity/show.xhtml?id=-1?edit=true</code>: when opening the detail
+                    view with an inexistent entity id (e.g. -1), the user is redirected to
+                    the master view and an error message is shown.</li>
+                      <li><code>entity/show.xhtml?id=-1</code>: when opening the detail view with
+                    an inexistent entity id (e.g. -1), the user is redirected to the master
+                    view and an error message is shown.</li>
+                    </ul>
+                <p>You can optionally add <a href="http://www.ocpsoft.org/prettyfaces/">PrettyFaces</a> 
+                    to your project in order to change these
+                    URL patterns into true RESTful URLs. For instance, by adhering to the
+                    <a href="http://microformats.org/wiki/rest/urls">microformats standard</a> definition:</p>
+                    <ul>
+                      <li><code>entities</code>: shows the master view</li>
+                      <li><code>entities/1/edit</code>: shows the detail view in edit mode for
+                    entity with id=1.</li>
+                      <li><code>entities/1</code>: shows the detail view in read-only mode for
+                    entity with id=1.</li>
+                      <li><code>entities/new</code>: shows the detail view in edit mode for creating
+                    a new entity.</li>
+                      <li><code>entities/-1/edit</code>: when opening the detail view with an
+                    inexistent entity id (e.g. -1), the user is redirected to the master
+                    view and an error message is shown.</li>
+                      <li><code>entities/-1</code>: when opening the detail view with an inexistent
+                    entity id (e.g. -1), the user is redirected to the master view and an
+                    error message is shown.</li>
+                    </ul>
+                    <p>In the demo application, this is realized for the customer view by
+                    setting up pretty-config.xml like so:</p>
+                
+                    <pre class="brush:xml">
+&lt;pretty-config xmlns=&quot;http://ocpsoft.org/schema/rewrite-config-prettyfaces&quot;
+               xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+               xsi:schemaLocation=&quot;http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd&quot;&gt;
+     
+    &lt;url-mapping&gt;
+        &lt;pattern value=&quot;/crud/restful/customers&quot; /&gt;
+        &lt;view-id value=&quot;/faces/crud/restful/customer/list.xhtml&quot; /&gt;
+    &lt;/url-mapping&gt;
+    &lt;url-mapping&gt;
+        &lt;pattern value=&quot;/crud/restful/customers/\#{/[0-9]+/ id}/edit&quot; /&gt;
+        &lt;view-id value=&quot;/faces/crud/restful/customer/show.xhtml?edit=true&quot; /&gt;
+    &lt;/url-mapping&gt;
+    &lt;url-mapping&gt;
+        &lt;pattern value=&quot;/crud/restful/customers/\#{/[0-9]+/ id}&quot; /&gt;
+        &lt;view-id value=&quot;/faces/crud/restful/customer/show.xhtml&quot; /&gt;
+    &lt;/url-mapping&gt;
+    &lt;url-mapping&gt;
+        &lt;pattern value=&quot;/crud/restful/customers/new&quot; /&gt;
+        &lt;view-id value=&quot;/faces/crud/restful/customer/show.xhtml?edit=true&quot; /&gt;
+    &lt;/url-mapping&gt; 
+&lt;/pretty-config&gt;
+                    </pre>
+            </ui:define>
+            
+            <ui:define name="demo">
+                <p:button outcome="customer/list.xhtml" value="Open demo page" styleClass="btn-primary"/>
+                <p>The demo page contains info-boxes which explain the most important parts of building the XHTML Facelets view.
+                </p>
+                <p>Of course, you can also view the entire demo page source code.
+                </p>
+                <p><b>Note: </b>This showcases’ live demo uses a <code>@SessionScoped</code> <code>CrudServiceMocked</code> implementation
+                    instead of a true persistent service so that entities are kept in a <code>HashMap</code> in the user's session rather than
+                in a database. Hence, you can invalidate your session in order to reset the entity collection.</p>
+            </ui:define>
+            
+            <ui:define name="code">
+                
+            </ui:define>
+            
+            <ui:define name="documentation-panel"/>
+        </ui:composition>
+    </h:body>
+</html>

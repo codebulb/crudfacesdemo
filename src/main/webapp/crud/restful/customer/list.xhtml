@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>RESTFUL Customer overview - CrudFaces showcase</title>
+        <h:outputStylesheet library="css" name="bootstrap-theme.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap-select.min.css"/>
+        <h:outputScript library="js" name="bootstrap.min.js" />
+        <h:outputScript library="js" name="bootstrap-select.min.js" />
+        <h:outputStylesheet name="css/font-awesome.min.css" />
+        <h:outputStylesheet library="css" name="page.css" />
+        
+        <!-- Syntax Highlighter -->
+        <h:outputStylesheet library="css" name="shCore.css" />
+        <h:outputStylesheet library="css" name="shThemeDefault.css" />
+        <h:outputScript library="js" name="shCore.js" />
+        <h:outputScript library="js" name="shBrushXml.js" />
+        <h:outputScript library="js" name="shBrushJava.js" />
+        <h:outputScript library="js" name="shBrushPlain.js" />
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewAction action="#{customerController.initEntities}"/>
+        </f:metadata>
+        
+        <div class="container-fluid">
+            
+        <p:button outcome="/crud/restful/index.xhtml" value="Back"/>
+        
+        <h:form id="tableForm">
+        <demo:info id="infoMetadata" title="Init page: load entities">
+            <p>On page load, we fetch the entities from the persistence storage in order to polulate the view.</p>
+            <p>Register the <code>CrudController</code>'s init method:</p>
+            <pre class="brush:xml">
+&lt;f:metadata&gt;
+    &lt;f:viewAction action=&quot;\#{controller.initEntities}&quot;/&gt;
+&lt;/f:metadata&gt;
+            </pre>
+        </demo:info>
+        
+        <c:set var="controller" value="#{customerController}"/>
+        
+        <p:messages id="messages"/>
+        
+        <p:defaultCommand target="table:createAction"/>
+        
+        <p:focus for="table:createAction"/>
+        <o:resolveComponent name="deleteSelectedActionComp" for="table:deleteSelectedAction"/>
+        <p:hotkey bind="del" handler="$('##{deleteSelectedActionComp.clientId.replaceAll(':', '\\\\\\\\:')}').click();" />
+        
+        <demo:info id="infoTableSource" title="Backing bean for table">
+            <p>Use <code>CrudController</code> as the backing bean for a PrimeFaces <code>&lt;p:dataTable&gt;</code>:</p>
+            <pre class="brush:xml">
+&lt;p:dataTable id=&quot;table&quot; widgetVar=&quot;tableWidget&quot; value=&quot;\#{controller.entities}&quot; var=&quot;item&quot;
+    …&gt;
+            </pre>
+        </demo:info>
+
+        <demo:info id="infoTableSelection" title="Row selection">
+            <p>A <code>CrudController</code> supports single and multi select, using either a row click or a radio button / checkbox click.</p>
+            <p>Set the dataTable <code>selection=&quot;\#{controller.selectedEntity}&quot;</code> for single select or 
+            <code>selection=&quot;\#{controller.selectedEntities}&quot;</code> for multi select, respectively.</p>
+            <ul>
+                <li>When using <code>selection=&quot;\#{controller.selectedEntity}</code>, the
+            <code>\#{controller.selectedEntities[0]}</code> contains the single selected entity as well.</li>
+                <li>On multi select (using <code>selection=&quot;\#{controller.selectedEntities}&quot;</code>),
+            PrimeFaces fills the list in selection order, i.e. <code>\#{controller.selectedEntities[0]}</code> holds the first selected item.
+                In this demo application, this is used to decide which single entity to show / edit. Make sure the enduser understands this 
+                selection behavior.</li>
+            </ul>
+            <p>Important: Bind <code>rowKey=&quot;\#{item}&quot;</code> where <code>item</code> is <code>var=&quot;item&quot;</code></p>
+        </demo:info>
+        
+        <p:dataTable id="table" widgetVar="tableWidget" value="#{controller.entities}" var="item"
+                     emptyMessage="#{I18N['info.dataTable.empty']}"
+                     sortMode="multiple" 
+                     selection="#{controller.selectedEntities}" rowKey="#{item}"
+                     rows="5" paginator="true">
+            <f:facet name="header">
+                <p:link id="createAction" outcome="show.xhtml" class="btn btn-primary">
+                    <f:param name="edit" value="true"/>
+                    <span class="fa fa-plus"></span> #{I18N.wi('create_', 'customer')}
+                </p:link>
+            </f:facet>
+
+            <p:ajax event="rowSelect" update="showSelectedAction editSelectedAction deleteSelectedAction" />
+            <p:ajax event="rowUnselect" update="showSelectedAction editSelectedAction deleteSelectedAction" />
+            <p:ajax event="rowSelectCheckbox" update="showSelectedAction editSelectedAction deleteSelectedAction" />
+            <p:ajax event="rowUnselectCheckbox" update="showSelectedAction editSelectedAction deleteSelectedAction" />
+            <p:ajax event="toggleSelect" update="showSelectedAction editSelectedAction deleteSelectedAction" />
+            <p:ajax event="rowSelectRadio" update="showSelectedAction editSelectedAction deleteSelectedAction" />
+
+            <p:column selectionMode="multiple" style="width: 60px"/>
+
+            <p:column headerText="#{I18N['id']}" sortBy="#{item.id}" style="width: 60px">
+                <h:outputText value="#{item.id}"/>
+            </p:column>
+            <p:column headerText="#{I18N['firstName']}" sortBy="#{item.firstName}"
+                      filterBy="#{item.firstName}" filterValue="#{controller.filterValues.firstName}">
+                <h:outputText value="#{item.firstName}"/>
+            </p:column>
+            <p:column headerText="#{I18N['lastName']}" sortBy="#{item.lastName}" filterBy="#{item.lastName}">
+                <h:outputText value="#{item.lastName}"/>
+            </p:column>
+            <p:column headerText="#{I18N['actions']}" class="text-right" style="width: 270px">
+                <p:link outcome="show.xhtml" class="btn btn-default">
+                    <f:param name="id" value="#{item.id}"/>
+                    <span class="fa fa-eye"></span> #{I18N['show']}
+                </p:link>
+                <p:link outcome="show.xhtml" class="btn btn-default">
+                    <f:param name="id" value="#{item.id}"/>
+                    <f:param name="edit" value="true"/>
+                    <span class="fa fa-pencil"></span> #{I18N['edit']}
+                </p:link>
+                <p:commandLink action="#{controller.delete(item.id)}" class="btn btn-danger" ajax="false">
+                    <span class="fa fa-trash-o"></span> #{I18N['delete']}
+                </p:commandLink>
+            </p:column>
+
+            <f:facet name="footer">
+                <p:button id="resetSelectionAction" value="#{I18N['selection.clear']}" 
+                        outcome="list.xhtml"/>
+                <p:button id="resetFilterAction" value="#{I18N['filters.reset']}" 
+                        outcome="list.xhtml"/>
+                <p:link id="showSelectedAction" outcome="show.xhtml" class="btn btn-default"
+                       disabled="#{empty controller.selectedEntities}">
+                    <f:param name="id" value="#{controller.selectedEntities[0].id}"/>
+                    <span class="fa fa-eye"></span> #{I18N['show.selected']}
+                </p:link>
+                <p:link id="editSelectedAction" outcome="show.xhtml" class="btn btn-default"
+                       disabled="#{empty controller.selectedEntities}">
+                    <f:param name="id" value="#{controller.selectedEntities[0].id}"/>
+                    <f:param name="edit" value="true"/>
+                    <span class="fa fa-pencil"></span> #{I18N['edit.selected']}
+                </p:link>
+                <p:commandLink id="deleteSelectedAction" action="#{controller.deleteSelected}" class="btn btn-danger" ajax="false"
+                       disabled="#{empty controller.selectedEntities}">
+                    <span class="fa fa-trash"></span> #{I18N['delete.selected']}
+                </p:commandLink>
+            </f:facet>
+        </p:dataTable>  
+        
+        <demo:info id="infoGetButton" title="GET request buttons">
+            <p>In a RESTful, stateless application, state information from one page to another must be passed using request parameters.</p>
+            <p>Hence, in this application, we use <code>&lt;p:link&gt;</code>s or <code>&lt;p:button&gt;</code>s for GET requests (request which do not trigger any 
+            backing bean actions) like e.g. for the edit selected action:</p>
+            <pre class="brush:xml">
+&lt;p:link id=&quot;editSelectedAction&quot; outcome=&quot;show.xhtml&quot; class=&quot;btn btn-default&quot;
+   disabled=&quot;\#{empty controller.selectedEntities}&quot;&gt;
+    &lt;f:param name=&quot;id&quot; value=&quot;\#{controller.selectedEntities[0].id}&quot;/&gt;
+    &lt;f:param name=&quot;edit&quot; value=&quot;true&quot;/&gt;
+    &lt;span class=&quot;fa fa-pencil&quot;&gt;&lt;/span&gt; \#{I18N['edit.selected']}
+&lt;/p:link&gt;
+            </pre>
+            <p>Here, the GET request will contain the <code>id</code> and <code>edit</code> parameter (as seen in the output URL)</p>
+        </demo:info>
+        
+        <demo:info id="infoPostButton" title="POST request buttons">
+            <p>For buttons which do trigger a backing bean action, the POST-redirect-GET pattern is applied. This is implemented in
+            <code>CrudController</code> already which makes sure that a POST request will trigger a redirect in order to trigger URL rewriting.</p>
+            <p>We can thus use <code>&lt;p:commandLink&gt;</code>s or <code>&lt;p:commandButton&gt;</code>s  like e.g. for the “delete selected” action:</p>
+            <pre class="brush:xml">
+&lt;p:commandLink id=&quot;deleteSelectedAction&quot; action=&quot;\#{controller.deleteSelected}&quot; class=&quot;btn btn-danger&quot; ajax=&quot;false&quot;
+	   disabled=&quot;\#{empty controller.selectedEntities}&quot;&gt;
+	&lt;span class=&quot;fa fa-trash&quot;&gt;&lt;/span&gt; \#{I18N['delete.selected']}
+&lt;/p:commandLink&gt;
+            </pre>
+        </demo:info>
+        <demo:info id="infoResetSelection" title="Reset selection">
+            <p>Because the view is stateless, you can reset the selection simply by reloading the page:</p>
+            <pre class="brush:xml">
+&lt;p:button id=&quot;resetSelectionAction&quot; value=&quot;\#{I18N['selection.clear']}&quot; outcome=&quot;list.xhtml&quot;/&gt;
+            </pre>
+        </demo:info>
+        <demo:info id="infoResetFilter" title="Reset filter">
+            <p>Because the view is stateless, you can reset the filter simply by reloading the page:</p>
+            <pre class="brush:xml">
+&lt;p:button id=&quot;resetFilterAction&quot; value=&quot;\#{I18N['filters.reset']}&quot; outcome=&quot;list.xhtml&quot;/&gt;
+            </pre>
+        </demo:info>
+    </h:form>
+            
+    </div>
+    </h:body>
+    <script type="text/javascript">SyntaxHighlighter.defaults['toolbar'] = false;SyntaxHighlighter.all()</script>
+</html>

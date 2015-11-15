@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">PrimeFaces &lt;p:focus&gt; renderer</ui:define>
+            <ui:define name="breadcrumb">
+                <li>global overrides</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                CrudFaces overrides the PrimeFaces component &lt;p:focus&gt;’s default renderer such that it provides more and better functionality out-of-the-box.
+            </ui:define>
+            <ui:define name="text">
+                <p>The PrimeFaces <a href="http://www.primefaces.org/showcase/ui/misc/focus.xhtml">focus</a>’s default renderer is overridden with a custom
+                    one. It changes the behavior as follows:</p>
+                    <ul>
+                        <li>Supports setting a button as <code>for</code> component, not just
+                    input components.</li>
+                      <li>Even if an explicit <code>for</code> component is set, it still
+                    respects validation errors and would set focus to an invalid component
+                    if such is present, ignoring the explicit <code>for</code> component. Originally,
+                    this works the other way around which seems counter-intuitive.
+                    Typically, one would always want to respect validation outcome when
+                    setting the focus.</li>
+                      <li>Text in selected input component gets “selected”, i.e. the
+                    entire text is selected (in the default configuration, no text was selected, and the input
+                    cursor was at position 0). This is especially useful when the focus is
+                    set as a consequence of a failed validation: The user can delete the
+                    text simply by hitting the delete key, or insert more text at the end
+                    of existing text immediately. It also matches the browser’s natural
+                    behavior on component navigation with the tab key.</li>
+                    </ul>
+            </ui:define>
+            
+            <ui:define name="demo">
+                <ui:include src="impl/focus.xhtml"/>
+            </ui:define>
+            
+            <ui:define name="code-tabs">
+                <p:tab title="index.xhtml">
+                    <pre class="brush:xml">
+&lt;h:form&gt;
+	&lt;p&gt;Explicit focus on the save button per default, or on the first invalid input:&lt;/p&gt;
+	&lt;p:focus for=&quot;saveAction&quot;/&gt;
+		&lt;cf:formLayout style=&quot;width: 50%&quot;&gt;
+			&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+			&lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{focusController.entity.firstName}&quot;/&gt;
+			&lt;p:message for=&quot;firstName&quot;/&gt;
+			&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+			&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{focusController.entity.lastName}&quot;/&gt;
+			&lt;p:message for=&quot;lastName&quot;/&gt;
+			&lt;p:commandButton id=&quot;saveAction&quot; value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot; styleClass=&quot;btn-primary&quot;
+							 disabled=&quot;\#{not empty focusController.entity.firstName and not empty focusController.entity.lastName}&quot;/&gt;
+			&lt;p:commandButton value=&quot;\#{I18N['clear']}&quot; process=&quot;@this&quot; update=&quot;@form&quot; action=&quot;\#{focusController.clear}&quot;&gt;
+				&lt;p:resetInput target=&quot;@form&quot; /&gt;
+			&lt;/p:commandButton&gt;
+		&lt;/cf:formLayout&gt;
+&lt;/h:form&gt;
+                    </pre>
+                </p:tab>
+                <p:tab title="FocusController.java">
+                    <pre class="brush:java">
+@ViewScoped
+@Named
+public class FocusController implements Serializable {
+    private Customer entity = new Customer();
+
+    public Customer getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Customer entity) {
+        this.entity = entity;
+    }
+}
+                    </pre>
+                </p:tab>
+                <p:tab title="Customer.java">
+                    <pre class="brush:java">
+@Entity
+public class Customer extends CrudEntity {
+    @NotNull
+    @Pattern(regexp = &quot;[^0-9]*&quot;, message = &quot;{validation.model.customer.name}&quot;)
+    private String firstName;
+    @NotNull
+    @Pattern(regexp = &quot;[^0-9]*&quot;, message = &quot;{validation.model.customer.name}&quot;)
+    private String lastName;
+    
+    public String getInitials() {
+        return String.valueOf(firstName.charAt(0)) + String.valueOf(lastName.charAt(0));
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+}
+                    </pre>
+                </p:tab>
+            </ui:define>
+            
+            <ui:define name="documentation">
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/renderer/FocusRenderer.java">FocusRenderer</a></code></li>
+                </ul>
+            </ui:define>
+            
+        </ui:composition>
+    </h:body>
+</html>

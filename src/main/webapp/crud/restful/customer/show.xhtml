@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:cf="http://crudfaces.codebulb.ch"
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>RESTFUL Customer detail - CrudFaces showcase</title>
+        <h:outputStylesheet library="css" name="bootstrap-theme.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap-select.min.css"/>
+        <h:outputScript library="js" name="bootstrap.min.js" />
+        <h:outputScript library="js" name="bootstrap-select.min.js" />
+        <h:outputStylesheet name="css/font-awesome.min.css" />
+        <h:outputStylesheet library="css" name="page.css" />
+        
+        <!-- Syntax Highlighter -->
+        <h:outputStylesheet library="css" name="shCore.css" />
+        <h:outputStylesheet library="css" name="shThemeDefault.css" />
+        <h:outputScript library="js" name="shCore.js" />
+        <h:outputScript library="js" name="shBrushXml.js" />
+        <h:outputScript library="js" name="shBrushJava.js" />
+        <h:outputScript library="js" name="shBrushPlain.js" />
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewParam name="id" value="#{customerController.currentEntityId}"/>
+            <f:event type="preValidate" listener="#{customerController.initCurrentEntity}"/>
+            <f:viewAction action="#{customerController.initCurrentEntity}"/>
+        </f:metadata>
+        
+        <o:form id="form" includeRequestParams="true">
+            <demo:info id="infoMetadata" title="Init page: load entity">
+                <p>On page load, we fetch the entity from the persistence storage in order to polulate the view.</p>
+                <p>Register the <code>CrudController</code>'s init method:</p>
+                <pre class="brush:xml">
+&lt;f:metadata&gt;
+    &lt;f:viewParam name=&quot;id&quot; value=&quot;\#{customerController.currentEntityId}&quot;/&gt;
+    &lt;f:event type=&quot;preValidate&quot; listener=&quot;\#{customerController.initCurrentEntity}&quot;/&gt;
+    &lt;f:viewAction action=&quot;\#{customerController.initCurrentEntity}&quot;/&gt;
+&lt;/f:metadata&gt;
+                </pre>
+                <p>This implementation is also ready for use with a <code>@RequestScoped</code> controller.</p>
+            </demo:info>
+            
+            <c:set var="controller" value="#{customerController}"/>
+            <c:set var="entity" value="#{controller.currentEntity}"/>
+            <p:messages/>
+            <p:defaultCommand target="saveAction"/>
+            <p:focus id="focus" for="firstName" a:stealth="#{view.viewId.endsWith('list.xhtml')}"/>
+
+            <demo:info id="infoReadOnly" title="Read-only view">
+                <p>By using CrudFaces' <code>readOnly</code> tag, 
+                    you can turn your input mask into a read-only mask in two lines of code:</p>
+                <pre class="brush:xml">
+&lt;cf:readOnly disabled=&quot;\#{param.edit}&quot;&gt;
+    &lt;!-- your components --&gt;
+&lt;/cf:readOnly&gt;
+                </pre>
+                <p>Note that this implementations relies on OmniFace's <code>&lt;o:from&gt;</code> to keep <code>\#{param}</code> attributes in the request.</p>
+                <p>Also, don't forget to show / hide the correct buttons. </p>
+            </demo:info>
+            
+            <demo:info id="infoRequestParameters" title="Keep request parameters in the form">
+                <p>This mask uses OmniFace’s <code>&lt;o:from&gt;</code> instead of the vanilla JSF <code>&lt;h:from&gt;</code>
+                because the latter would purge HTTP request attributes from the URL on form submit; most importantly, it would delete them
+                when the form is submitted with validation error.</p>
+                <pre class="brush:xml">
+&lt;o:form id=&quot;form&quot; includeRequestParams=&quot;true&quot;&gt;
+                </pre>
+                <p>This is the solution for this problem.</p>
+            </demo:info>
+            <div class="container-fluid">
+                <cf:readOnly disabled="#{param.edit}">
+                    <cf:formLayout>
+                        <p:outputLabel id="firstNameLabel" for="firstName" value="#{I18N['firstName']}"/>
+                        <p:inputText id="firstName" value="#{entity.firstName}"/>
+                        <p:message id="firstNameMessage" for="firstName"/>
+
+                        <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
+                        <p:inputText id="lastName" value="#{entity.lastName}" />
+                        <p:message for="lastName"/>
+
+                        <p:commandButton styleClass="btn-primary" id="saveAction" value="#{I18N['save']}" 
+                                         a:stealth="#{not param.edit}"
+                                         action="#{controller.save(entity)}" ajax="false"/>
+                        <p:button value="#{I18N[empty entity.id ? 'clear' : 'reset']}" outcome="show.xhtml"
+                                  a:stealth="#{not param.edit}">
+                            <f:param name="id" value="#{entity.id}" disable="#{empty entity.id}"/>
+                            <f:param name="edit" value="true"/>
+                        </p:button>
+                        <p:commandLink id="deleteAction" value="#{I18N['delete']}" action="#{controller.delete(entity.id)}" 
+                               a:stealth="#{empty entity.id or not param.edit}" class="btn btn-danger" ajax="false">
+                        </p:commandLink>
+                        <p:button id="cancelAction" value="#{I18N['cancel']}" outcome="list.xhtml"/>
+                    </cf:formLayout>
+                </cf:readOnly>
+            </div>
+            
+            <demo:info id="infoReset" title="Reset inputs">
+                <p>Thanks to the RESTful, stateless nature of this application, resetting the input fields is a matter of reloading
+                the page with the same parameters:</p>
+                <pre class="brush:xml">
+&lt;p:button value=&quot;\#{I18N[empty entity.id ? 'clear' : 'reset']}&quot; outcome=&quot;show.xhtml&quot;&gt;
+    &lt;f:param name=&quot;id&quot; value=&quot;\#{entity.id}&quot; disable=&quot;\#{empty entity.id}&quot;/&gt;
+    &lt;f:param name=&quot;edit&quot; value=&quot;true&quot;/&gt;
+&lt;/p:button&gt;
+                </pre>
+            </demo:info>
+            <demo:info id="infoCancel" title="Cancel button">
+                <p>Thanks to the RESTful, stateless nature of this application, cancelling input is even trivial:
+                Just go back to the previous page.</p>
+                <pre class="brush:xml">
+&lt;p:button id=&quot;cancelAction&quot; value=&quot;\#{I18N['cancel']}&quot; outcome=&quot;list.xhtml&quot;/&gt;
+                </pre>
+            </demo:info>
+        </o:form>
+    </h:body>
+    <script type="text/javascript">SyntaxHighlighter.defaults['toolbar'] = false;SyntaxHighlighter.all()</script>
+</html>

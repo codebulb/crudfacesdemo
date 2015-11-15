@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:cf="http://crudfaces.codebulb.ch"
+                >
+    <h:form>
+        <p><code>@RequestScoped</code> bean:</p>
+        <cf:formLayout styleClass="clearfix" style="margin-bottom: 12px;">
+            <p:outputLabel for="text" value="@RequestScoped bean text:"/>
+            <h:outputText id="text" value="#{requestScopedBean.text}"/>
+            <p:commandButton value="Update text and reload" action="#{requestScopedBean.updateText()}" ajax="false"/>
+        </cf:formLayout>
+
+        <p><code>@RequestScoped</code> bean used with <code>\#{flashBeans}</code>:</p>
+        <cf:formLayout>
+            <p:outputLabel for="textFlash" value="@RequestScoped bean text:"/>
+            <h:outputText id="textFlash" value="#{flashBeans.requestScopedBean.text}"/>
+            <p:commandButton value="Update text and reload" action="#{flashBeans.requestScopedBean.updateText()}" ajax="false"/>
+        </cf:formLayout>
+    </h:form>
+</ui:composition>

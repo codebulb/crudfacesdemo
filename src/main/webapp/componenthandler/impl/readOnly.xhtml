@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:cf="http://crudfaces.codebulb.ch"
+                >
+
+    <h:form>
+        <p:focus for="firstName"/>
+        <cf:readOnly disabled="#{not readOnlyController.readOnly}">
+            <cf:formLayout style="width: 50%">
+                <p:outputLabel for="firstName" value="#{I18N['firstName']}"/>
+                <p:inputText id="firstName" value="#{readOnlyController.entity.firstName}"/>
+                <p:message for="firstName"/>
+                <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
+                <p:inputText id="lastName" value="#{readOnlyController.entity.lastName}"/>
+                <p:message for="lastName"/>
+                <p:commandButton value="#{I18N['save']}" update="@form" 
+                                 a:stealth="#{readOnlyController.readOnly}" />
+                <p:commandButton value="#{readOnlyController.controlText}"
+                                 action="#{readOnlyController.switchReadOnly()}"
+                                 update="@form" process="@this"/>
+            </cf:formLayout>
+        </cf:readOnly>
+    </h:form>
+</ui:composition>

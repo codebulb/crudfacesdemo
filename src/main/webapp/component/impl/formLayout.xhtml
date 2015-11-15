@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:cf="http://crudfaces.codebulb.ch"
+                >
+    
+    <p>Note that as you resize the browser window, the components get re-arranged according to the Bootstrap responsive grid layout.</p>
+    <h:form id="simple">
+        <p>A simple formLayout.</p>
+        <cf:formLayout styleClass="clearfix" style="margin-bottom: 12px;">
+            <p:outputLabel for="firstName" value="#{I18N['firstName']}"/>
+            <p:inputText id="firstName" value="#{formLayoutController.entity.firstName}"/>
+            <p:message for="firstName"/>
+            <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
+            <p:inputText id="lastName" value="#{formLayoutController.entity.lastName}"/>
+            <p:message for="lastName"/>
+            <p:commandButton value="#{I18N['save']}" update="@form"/>
+        </cf:formLayout>
+    </h:form>
+    
+    <h:form id="groups">
+        <p>User-defined number of groups per row.</p>
+        <cf:formLayout groups="2" styleClass="clearfix" style="margin-bottom: 12px;">
+            <p:outputLabel for="firstName" value="#{I18N['firstName']}"/>
+            <p:inputText id="firstName" value="#{formLayoutController.entity.firstName}"/>
+            <p:message for="firstName"/>
+            <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
+            <p:inputText id="lastName" value="#{formLayoutController.entity.lastName}"/>
+            <p:message for="lastName"/>
+            <p:commandButton value="#{I18N['save']}" update="@form"/>
+        </cf:formLayout>
+    </h:form>
+    
+    <h:form id="groupsRatios">
+        <p>User-defined group column aspect ratio.</p>
+        <cf:formLayout groups="2" groupRatios="2 10" styleClass="clearfix" style="margin-bottom: 12px;">
+            <p:outputLabel for="firstName" value="#{I18N['firstName']}"/>
+            <p:inputText id="firstName" value="#{formLayoutController.entity.firstName}"/>
+            <p:message for="firstName"/>
+            <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
+            <p:inputText id="lastName" value="#{formLayoutController.entity.lastName}"/>
+            <p:message for="lastName"/>
+            <p:commandButton value="#{I18N['save']}" update="@form"/>
+        </cf:formLayout>
+    </h:form>
+    
+    <h:form id="buttons">
+        <p:defaultCommand target="saveAction"/>
+        <p>User-defined button placement.</p>
+        <cf:formLayout groups="2" groupRatios="4 6 2" styleClass="clearfix" style="margin-bottom: 12px;">
+            <p:outputLabel for="firstName" value="#{I18N['firstName']}"/>
+            <p:inputText id="firstName" value="#{formLayoutController.entity.firstName}"/>
+            <p:message for="firstName"/>
+            <p:commandButton value="Help" a:inline="true"/>
+            <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
+            <p:inputText id="lastName" value="#{formLayoutController.entity.lastName}"/>
+            <p:message for="lastName"/>
+            <p:commandButton value="Help" a:inline="true"/>
+            <p:commandButton id="saveAction" value="#{I18N['save']}" update="@form"/>
+            <h:outputText a:buttonBar="true" value="Please review your input carefully before clicking the save button."/>
+        </cf:formLayout>
+    </h:form>
+</ui:composition>

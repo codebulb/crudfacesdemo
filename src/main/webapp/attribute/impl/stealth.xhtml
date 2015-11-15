@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:cf="http://crudfaces.codebulb.ch"
+                >
+
+    <h:form id="rendered">
+        <p>Vanilla JSF <code>rendered</code>: Lost after being hidden</p>
+        <cf:formLayout style="width: 50%;" styleClass="clearfix">
+            <p:outputLabel for="button" value="Dangerous button:"/>
+            <p:commandLink id="button" rendered="#{renderedController.shown}" class="btn btn-default" a:inline="true">
+                <span class="fa fa-exclamation-triangle" aria-hidden="true"></span> Destroy the world!
+            </p:commandLink>
+            <p:outputLabel for="another" value="Another component:"/>
+            <h:outputText id="another" value="#{now}"/>
+            <p:commandButton value="#{renderedController.controlText}" actionListener="#{renderedController.switchShown()}"
+                             process="@this" update="@this button"/>
+        </cf:formLayout>
+    </h:form>
+
+    <h:form id="renderedContainer">
+        <p style="margin-top: 24px;">Vanilla JSF <code>rendered</code> with update on parent container: Side effects because every child is updated</p>
+        <cf:formLayout id="layout" style="width: 50%;" styleClass="clearfix">
+            <p:outputLabel for="button" value="Dangerous button:"/>
+            <p:commandLink id="button" rendered="#{renderedInContainerController.shown}" class="btn btn-default" a:inline="true">
+                <span class="fa fa-exclamation-triangle" aria-hidden="true"></span> Destroy the world!
+            </p:commandLink>
+            <p:outputLabel for="another" value="Another component:"/>
+            <h:outputText id="another" value="#{now}"/>
+            <p:commandButton value="#{renderedInContainerController.controlText}" actionListener="#{renderedInContainerController.switchShown()}"
+                             process="@this" update="layout"/>
+        </cf:formLayout>
+    </h:form>
+
+    <h:form id="stealth">
+        <p style="margin-top: 24px;">CrudFaces <code>a:stealth</code>: Works</p>
+        <cf:formLayout style="width: 50%;" styleClass="clearfix">
+            <p:outputLabel for="button" value="Dangerous button:"/>
+            <p:commandLink id="button" a:stealth="#{not stealthModeController.shown}" class="btn btn-default" a:inline="true">
+                <span class="fa fa-exclamation-triangle" aria-hidden="true"></span> Destroy the world!
+            </p:commandLink>
+            <p:outputLabel for="another" value="Another component:"/>
+            <h:outputText id="another" value="#{now}"/>
+            <p:commandButton value="#{stealthModeController.controlText}" actionListener="#{stealthModeController.switchShown()}"
+                             process="@this" update="@this button"/>
+        </cf:formLayout>
+    </h:form>
+</ui:composition>

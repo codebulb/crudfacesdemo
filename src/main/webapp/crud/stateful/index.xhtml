@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">Stateful view</ui:define>
+            <ui:define name="breadcrumb">
+                <li><h:link outcome="/crud/index.xhtml" value="CRUD"/></li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                A stateful combined master / detail view with support for AJAX actions.
+            </ui:define>
+            <ui:define name="text">
+                <p>A <code>CrudController</code> implementation can be used to implement a stateful XHTML Facelets view.</p>
+                <p>Here, the detail view of the currently “selected” entity is part of the master
+                view (e.g. in a dialog box). Any CRUD action on an entity
+                immediately synchronizes between master and detail view, but the
+                changes must be explicitly synchronized with the persistence storage
+                (e.g through an “apply” button). This is e.g. an ideal choice when you
+                have a parent entity and changes to its child entities should be saved
+                as a whole, not on a per-child basis.</p>
+                
+                <h2>Usage</h2>
+                <p>Use these <code>CrudController</code> methods to trigger actions:</p>
+                <ul>
+                  <li><code>updateSelectedOrNewEntity()</code>: Adds the <code>newEntity</code> if none is selected (operation not persisted)</li>
+                  <li><code>removeEntity(id)</code>: Removes the entity with id (operation not persisted)</li>
+                  <li><code>removeSelectedEntity()</code> / <code>removeSelectedEntities()</code>: Removes the selected entity/ies (operation not persisted)</li>
+                  <li><code>saveAllEntities()</code>: Persists pending changes to the service</li>
+                </ul>
+            </ui:define>
+            
+            <ui:define name="demo">
+                <p:button outcome="customer/list.xhtml" value="Open demo page" styleClass="btn-primary"/>
+                <p>The demo page contains info-boxes which explain the most important parts of building the XHTML Facelets view.
+                </p>
+                <p>Some of the basics about using <code>CrudController</code> as a backing bean are explained on the
+                    <h:link outcome="/crud/restful/index.xhtml">RESTful demo page</h:link> and on the
+                    <h:link outcome="/crud/stateless/index.xhtml">Stateless demo page</h:link>.
+                </p>
+                <p>Of course, you can also view the entire demo page source code.
+                </p>
+                <p><b>Note: </b>This showcases’ live demo uses a <code>@SessionScoped</code> <code>CrudServiceMocked</code> implementation
+                    instead of a true persistent service so that entities are kept in a <code>HashMap</code> in the user's session rather than
+                in a database. Hence, you can invalidate your session in order to reset the entity collection.</p>
+            </ui:define>
+            
+            <ui:define name="code">
+                
+            </ui:define>
+            
+            <ui:define name="documentation-panel"/>
+        </ui:composition>
+    </h:body>
+</html>

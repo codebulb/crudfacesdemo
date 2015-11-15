@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">CrudService</ui:define>
+            <ui:define name="breadcrumb">
+                <li><h:link outcome="/crud/index.xhtml" value="CRUD"/></li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                An abstract generic base implementation of a CRUD persistence storage access “service” (a “persistence service”),
+                making it easy to derive a best-practices compliant concrete CRUD service implementation.
+            </ui:define>
+            <ui:define name="text">
+                <p>This service realizes the basic CRUD operations:</p>
+                <ul>
+                  <li>Create: create() + save()</li>
+                  <li>Read: findById(Long id) / findAll()</li>
+                  <li>Update: save()</li>
+                  <li>Delete: delete()</li>
+                </ul>
+                <p>In order to create a CRUD service for an entity type, make sure the
+                entity implements <code>CrudIdentifiable</code> (or inherits from <code>CrudEntity</code>),
+                implement <code>CrudService</code> for the entity and register it as a CDI bean in
+                the container (depending on beans.xml <code>bean-discovery-mode</code>, explicit registration may not be necessary).</p>
+                <p>For this demo application, the service implementation for the <code>Customer</code>
+                entity extends <code>CrudService</code> like this:</p>
+                <pre class="brush:java">
+public class CustomerService extends CrudService&lt;Customer&gt; {
+    @Override
+    @PersistenceContext
+    protected void setEm(EntityManager em) {
+        super.setEm(em);
+    }
+
+    @Override
+    public Customer create() {
+        return new Customer();
+    }
+
+    @Override
+    public Class&lt;Customer&gt; getModelClass() {
+        return Customer.class;
+    }
+}
+                </pre>
+                <ul>
+                  <li>Within the <code>setEm(EntityManager)</code> method, simply call the super method.
+                      The important part is that you inject your <code>@PersistenceContext</code> in this method
+                  by annotation.</li>
+                </ul>
+                <p>You can immediately use this service in a backing bean with full support 
+                    for CRUD operations on your persistence storage.</p>
+                
+                <p>Conveniently, CrudFaces also comes with an alternative implementation of <code>CrudService</code> named <code>CrudServiceMocked</code>. 
+                    As its name suggests, this implementation’s “persistence” functionality is based on a simple <code>HashMap</code> 
+                    storing the saved entities. Whilst of no use in a real-world production environment, this class might 
+                    come in handy if you want to try something out without having a proper database / persistence configuration 
+                    set up. You may then use a <code>CrudServiceMocked</code> implementation as e.g. a <code>@SessionScoped</code> bean, and later change 
+                    to a true <code>CrudService</code> without any interface changes.</p>
+                <p>In fact, this showcases’ live demo uses a <code>@SessionScoped</code> <code>CrudServiceMocked</code> implementation.</p>
+                
+                <h2>Known restrictions</h2>
+                <ul>
+                    <li>No explicit support for cascading, especially for <code>CrudServiceMocked</code>.</li>
+                </ul>
+                <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
+            </ui:define>
+            
+            <ui:define name="demo-panel"/>
+            <ui:define name="code-panel"/>
+            <ui:define name="documentation">
+                <strong>API</strong>
+                <ul>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/service/CrudService.html">CrudService</a></code></li>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/service/CrudServiceMocked.html">CrudServiceMocked</a></code></li>
+                </ul>
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/service/CrudService.java">CrudService</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/service/CrudServiceMocked.java">CrudServiceMocked</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

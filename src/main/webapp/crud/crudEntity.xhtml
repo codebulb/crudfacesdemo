@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">CrudEntity</ui:define>
+            <ui:define name="breadcrumb">
+                <li><h:link outcome="/crud/index.xhtml" value="CRUD"/></li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                An abstract generic base class for a persistent business entity (model).
+            </ui:define>
+            <ui:define name="text">
+                <p>Use either the <code>CrudIdentifiable</code> interface or the <code>CrudEntity</code> class to
+                    derive your entity model classes from. This is the only prerequisite to
+                    use them with a <code>CrudService</code> and a <code>CrudController</code>.</p>
+                    <p>The difference between the interface and the class is that the latter provides an
+                    auto-generated <code>Long id</code> field implementation out-of-the-box.</p>
+                    <p>For this demo application, a <code>Customer</code> entity is created by deriving from
+                    <code>CrudEntity</code> like so:</p>
+                <pre class="brush:java">
+@Entity
+public class Customer extends CrudEntity {
+    @NotNull
+    private String firstName;
+    @NotNull
+    private String lastName;
+    
+    public String getInitials() {
+        return String.valueOf(firstName.charAt(0)) + String.valueOf(lastName.charAt(0));
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+}
+                </pre>
+                <p>Apart from the <code>@Entity</code> annotation, this class consists solely of business logic.</p>
+            </ui:define>
+            
+            <ui:define name="demo-panel"/>
+            <ui:define name="code-panel"/>
+            <ui:define name="documentation">
+                <strong>API</strong>
+                <ul>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/model/CrudEntity.html">CrudEntity</a></code></li>
+                    <li><code><a href="http://codebulb.github.io/pages/crudfaces/doc/ch/codebulb/crudfaces/model/CrudIdentifiable.html">CrudIdentifiable</a></code></li>
+                </ul>
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/model/CrudEntity.java">CrudEntity</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/model/CrudIdentifiable.java">CrudIdentifiable</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
