@@ -13,10 +13,6 @@ public class Customer extends CrudEntity {
     @NotNull
     @Pattern(regexp = "[^0-9]*", message = "{validation.model.customer.name}")
     private String lastName;
-    
-    public String getInitials() {
-        return String.valueOf(firstName.charAt(0)) + String.valueOf(lastName.charAt(0));
-    }
 
     public String getFirstName() {
         return firstName;

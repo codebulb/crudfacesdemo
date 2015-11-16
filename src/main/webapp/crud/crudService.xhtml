@@ -3,11 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo"
       >
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">CrudService</ui:define>
+            <ui:define name="status-label"><demo:status value="W"/></ui:define>
             <ui:define name="breadcrumb">
                 <li><h:link outcome="/crud/index.xhtml" value="CRUD"/></li>
             </ui:define>
@@ -19,10 +20,10 @@
             <ui:define name="text">
                 <p>This service realizes the basic CRUD operations:</p>
                 <ul>
-                  <li>Create: create() + save()</li>
-                  <li>Read: findById(Long id) / findAll()</li>
-                  <li>Update: save()</li>
-                  <li>Delete: delete()</li>
+                  <li><b>Create (C):</b> <code>create()</code> + <code>save()</code></li>
+                  <li><b>Read (R)</b>: <code>findById(Long id)</code> / <code>findAll()</code></li>
+                  <li><b>Update (U)</b>: <code>save()</code></li>
+                  <li><b>Delete (D)</b>: <code>delete()</code></li>
                 </ul>
                 <p>In order to create a CRUD service for an entity type, make sure the
                 entity implements <code>CrudIdentifiable</code> (or inherits from <code>CrudEntity</code>),

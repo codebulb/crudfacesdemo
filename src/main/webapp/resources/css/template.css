@@ -31,3 +31,9 @@
 .collapsing {
     transition: height 0.1s;
 }
+
+h1 > .label {
+    position: relative;
+    top: -4px;
+    font-weight: inherit;
+}

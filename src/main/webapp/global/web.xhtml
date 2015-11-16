@@ -3,11 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:cf="http://crudfaces.codebulb.ch">
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo">
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">web.xml context-params</ui:define>
+            <ui:define name="status-label"><demo:status value="B"/></ui:define>
             <ui:define name="breadcrumb">
                 <li>global overrides</li>
             </ui:define>
@@ -20,7 +20,7 @@
                     configurations which derive from vanilla JSF configuration, but are
                     considered best-practices and more useful for most JSF projects than
                     are the actual JSF defaults.</p>
-                    <p>The following default context-param elements are added to the web.xml configuration:</p>
+                    <p>The following default <code>&lt;context-param&gt;</code> elements are added to the web.xml configuration:</p>
                     <ul>
                         <li><code>javax.faces.FACELETS_SKIP_COMMENTS</code> = <code>true</code> to disable the
                     potentially harmful rendering of XHTML comments</li>

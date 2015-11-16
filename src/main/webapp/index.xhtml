@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:cf="http://crudfaces.codebulb.ch">
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo">
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">Home</ui:define>
@@ -21,7 +20,7 @@
                         Please choose an item in the left menu to learn more. Or:
                     </div>
                     
-                    <div class="row" style="margin-top: 80px;">
+                    <div class="row" style="margin-top: 40px;">
                         <div class="col-sm-3"></div>
                         <div class="col-xs-12 col-sm-6">
                             <a href="https://github.com/codebulb/crudfaces" class="btn btn-default btn-lg btn-block">Inspect the project's GitHub repository</a>
@@ -31,6 +30,24 @@
                         </div>
                         <div class="col-sm-3"></div>
                     </div>
+                </div>
+                
+                <div class="container-fluid" style="margin-top: 40px;">
+                    <h2>Project status</h2>
+                    <p>Note that until 1.0 release, every component of this framework should
+                        be considered “experimental”. On the individual component’s pages,
+                        labels represent the current status of the component:</p>
+                        <ul>
+                          <li><demo:status value="B"/>: Still experimental, but the main implementation work
+                        is considered “done”. Potential new functionality may be added in
+                        future releases.</li>
+                          <li><demo:status value="W"/>: Offers enough functionality to use it
+                        experimentally, but still lacks non-basic features which are currently
+                        under development.</li>
+                          <li><demo:status value="P"/>: Offers only a bare minimum of
+                        functionality. Is hardly of any use in a real-world environment until
+                        more development work is done.</li>
+                        </ul>
                 </div>
             </ui:define>
         </ui:composition>

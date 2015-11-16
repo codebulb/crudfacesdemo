@@ -22,9 +22,6 @@ body {
 .footer > .container > p {
     margin: 0;
 }
-/* fix anchor jump as in http://stackoverflow.com/a/13138463 */
-h1 { position:relative; }
-h1 span{ position:absolute; top:-70px;}
 
 /* auto-format images */
 .nav .fa, .panel-heading .fa {

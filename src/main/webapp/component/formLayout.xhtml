@@ -4,10 +4,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:cf="http://crudfaces.codebulb.ch">
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo">
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">formLayout</ui:define>
+            <ui:define name="status-label"><demo:status value="P"/></ui:define>
             <ui:define name="breadcrumb">
                 <li>components</li>
             </ui:define>

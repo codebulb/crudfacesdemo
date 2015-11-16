@@ -3,11 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:cf="http://crudfaces.codebulb.ch">
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo">
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">resource-bundles</ui:define>
+            <ui:define name="status-label"><demo:status value="W"/></ui:define>
             <ui:define name="breadcrumb">
                 <li>global overrides</li>
             </ui:define>
@@ -23,7 +23,7 @@
                     <h2>Usage</h2>
                     <p>In order to use them alongside user-created keys, use them in
                         the EL with the CrudFaces <code><h:link outcome="/managedbeans/i18n.xhtml">\#{I18N}</h:link></code> bean rather than a reference to your
-                    resource-bundle var. By using the <code>\#{I18N}</code> bean, message keys are
+                    resource-bundle <code>var</code>. By using the <code>\#{I18N}</code> bean, message keys are
                     resolved in order their <code>&lt;resource-bundle&gt;</code>s are registered.
                     Therefore, the default messages provided by CrudFaces are used as a
                     fallback for message keys you don’t declare / overwrite explicitly.

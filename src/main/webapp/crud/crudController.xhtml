@@ -3,11 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo"
       >
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">CrudController</ui:define>
+            <ui:define name="status-label"><demo:status value="W"/></ui:define>
             <ui:define name="breadcrumb">
                 <li><h:link outcome="/crud/index.xhtml" value="CRUD"/></li>
             </ui:define>
@@ -47,7 +48,7 @@ public class CustomerController extends CrudTableController&lt;Customer&gt; {
                     best practices CRUD operations for a RESTful PrimeFaces-based JSF
                     application out-of-the-box.
                 </p>
-                <p>CrudController supports <h:link outcome="/crud/index.xhtml">three ways of building a view</h:link>:</p>
+                <p><code>CrudController</code> supports <h:link outcome="/crud/index.xhtml">three ways of building a view</h:link>:</p>
                 <ul>
                   <li>a <h:link outcome="/crud/restful/index.xhtml">RESTful, stateless separate master / details view</h:link></li>
                   <li>a <h:link outcome="/crud/stateless/index.xhtml">stateless combined master / detail view</h:link></li>

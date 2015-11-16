@@ -4,10 +4,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:cf="http://crudfaces.codebulb.ch">
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo">
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">StyleClassChangeRenderKit</ui:define>
+            <ui:define name="status-label"><demo:status value="P"/></ui:define>
             <ui:define name="breadcrumb">
                 <li>renderkit</li>
             </ui:define>
@@ -71,7 +72,9 @@
 	&lt;render-kit-factory&gt;ch.codebulb.crudfaces.renderkit.StyleClassChangeRenderKitFactory&lt;/render-kit-factory&gt;
 &lt;/factory&gt;
                     </pre>
-                
+                    <p>Also make sure that you don’t override CrudFaces’ default web.xml <code>&lt;context-param&gt;</code>
+                        <code>primefaces.THEME</code> = <code>none</code></p>
+                    
                     <h2>Known restrictions</h2>
                     <ul>
                         <li>Only basic PrimeFaces components are supported.</li>

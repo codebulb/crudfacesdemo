@@ -4,10 +4,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:cf="http://crudfaces.codebulb.ch">
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo">
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">PrimeFaces &lt;p:focus&gt; renderer</ui:define>
+            <ui:define name="status-label"><demo:status value="B"/></ui:define>
             <ui:define name="breadcrumb">
                 <li>global overrides</li>
             </ui:define>
@@ -16,7 +17,7 @@
                 CrudFaces overrides the PrimeFaces component &lt;p:focus&gt;’s default renderer such that it provides more and better functionality out-of-the-box.
             </ui:define>
             <ui:define name="text">
-                <p>The PrimeFaces <a href="http://www.primefaces.org/showcase/ui/misc/focus.xhtml">focus</a>’s default renderer is overridden with a custom
+                <p>The PrimeFaces <code><a href="http://www.primefaces.org/showcase/ui/misc/focus.xhtml">&lt;focus&gt;</a></code>’s default renderer is overridden with a custom
                     one. It changes the behavior as follows:</p>
                     <ul>
                         <li>Supports setting a button as <code>for</code> component, not just

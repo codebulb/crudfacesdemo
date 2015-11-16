@@ -35,7 +35,7 @@
                       <li><code>deleteSelected()</code>: Deletes the selected entities (master view)</li>
                     </ul>
                     <p>
-                    In order to use CrudController as a backing bean for your RESTful
+                    In order to use <code>CrudController</code> as a backing bean for your RESTful
                     master / detail view, the actual XHTML pages must be placed in the “web
                     pages” folder of your web application like this:</p>
                     <ul>
@@ -48,7 +48,7 @@
                     As you can see, it’s only important that both pages are in the same
                     folder and their names are list.xhtml and show.xhtml, respectively.</p>
                     <p>
-                    CrudController then realizes these page URL interactions:</p>
+                    <code>CrudController</code> then realizes these page URL interactions:</p>
                     <ul>
                       <li><code>entity/list.xhtml</code>: shows the master view</li>
                       <li><code>entity/show.xhtml?id=1&amp;edit=true</code>: shows the detail
@@ -127,6 +127,9 @@
                 <ul>
                     <li><code><a href="https://github.com/codebulb/crudfacesdemo/blob/master/src/main/webapp/crud/restful/customer/list.xhtml">customer/list.xhtml</a></code></li>
                     <li><code><a href="https://github.com/codebulb/crudfacesdemo/blob/master/src/main/webapp/crud/restful/customer/show.xhtml">customer/show.xhtml</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfacesdemo/blob/master/src/main/java/ch/codebulb/crudfacesdemo/crud/model/Customer.java">Customer</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfacesdemo/blob/master/src/main/java/ch/codebulb/crudfacesdemo/crud/service/CustomerService.java">CustomerService</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfacesdemo/blob/master/src/main/java/ch/codebulb/crudfacesdemo/crud/controller/CustomerController.java">CustomerController</a></code></li>
                 </ul>
             </ui:define>
             
