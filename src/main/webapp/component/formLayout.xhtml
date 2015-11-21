@@ -60,6 +60,9 @@
                 <code>a:inline="true"</code> HTML5 pass-through attribute to it. If on the other
                 hand you want a non-button component to be placed in the “button bar”,
                 use the <code>a:buttonBar="true"</code> pass-through attribute.</li>
+                  <li>Set the <code>a:colspan</code> HTML5 pass-through attribute on any component to achieve a 
+                    “colspan” effect: The component will be placed in a cell which spans the 
+                    number of columns provided whilst keeping the layout responsive.</li>
                 </ul>
                 <p>Note that <code>&lt;cf:formLayout&gt;</code> does not implement an actual HTML <code>&lt;form&gt;</code>,
                 it’s really just for layouting purposes which leaves you the free
@@ -135,6 +138,24 @@
         &lt;p:commandButton id=&quot;saveAction&quot; value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
         &lt;h:outputText a:buttonBar=&quot;true&quot; value=&quot;Please review your input carefully before clicking the save button.&quot;/&gt;
     &lt;/cf:formLayout&gt;
+&lt;/h:form&gt;
+
+&lt;h:form id=&quot;colspan&quot;&gt;
+	&lt;p&gt;&lt;code&gt;a:colspan&lt;/code&gt; attribute.&lt;/p&gt;
+	&lt;cf:formLayout groups=&quot;2&quot; groupRatios=&quot;4 6 2&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
+		&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;#{I18N['firstName']}&quot;/&gt;
+		&lt;p:inputText a:colspan=&quot;2&quot; id=&quot;firstName&quot; value=&quot;#{formLayoutController.entity.firstName}&quot;/&gt;
+		&lt;p:message for=&quot;firstName&quot;/&gt;
+		&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;#{I18N['lastName']}&quot;/&gt;
+		&lt;p:inputText id=&quot;lastName&quot; value=&quot;#{formLayoutController.entity.lastName}&quot;/&gt;
+		&lt;p:message for=&quot;lastName&quot;/&gt;
+		&lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
+		&lt;p:outputLabel for=&quot;comment&quot; value=&quot;#{I18N['comment']}&quot;/&gt;
+		&lt;p:inputTextarea a:colspan=&quot;4&quot; id=&quot;comment&quot; value=&quot;#{formLayoutController.entity.comment}&quot;/&gt;
+		&lt;p:message for=&quot;comment&quot;/&gt;
+		&lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
+		&lt;p:commandButton id=&quot;saveAction&quot; value=&quot;#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
+	&lt;/cf:formLayout&gt;
 &lt;/h:form&gt;
                     </pre>
                 </p:tab>

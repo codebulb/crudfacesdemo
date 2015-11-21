@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo">
+    <h:body>
+        <ui:composition template="/feature.xhtml">
+            <ui:define name="title">@MaxSize</ui:define>
+            <ui:define name="status-label"><demo:status value="B"/></ui:define>
+            <ui:define name="breadcrumb">
+                <li>validators</li>
+            </ui:define>
+            
+            <ui:define name="p-intro">
+                A Bean Validation constraint to check for a String's max number of characters.
+            </ui:define>
+            <ui:define name="text">
+                <p>The <code>@Size</code> Bean Validation constraint is built to check for both min 
+                    and max boundaries, which is also reflected by its default validation
+                    message (<i>size must be between {min} and {max}</i>).</p>
+                <p>However, for many application we would like a validation constraint for max boundary only.
+                    Using <code>@Size</code> with <code>min = 0</code> would result in an awkward validation message 
+                    (e.g. <i>size must be between 0 and 100</i>).</p>
+                <p>Therefore, use the <code>@MaxSize</code> validation constraint to check for max boundary only.</p>
+            </ui:define>
+            <ui:define name="demo"><ui:include src="impl/maxSize.xhtml"/></ui:define>
+            <ui:define name="code-tabs">
+                <p:tab title="index.xhtml">
+                    <pre class="brush:xml">
+&lt;h:form&gt;
+	&lt;p&gt;Validate &lt;code&gt;@MaxSize(10)&lt;/code&gt;&lt;/p&gt;
+	&lt;cf:formLayout style=&quot;width: 50%;&quot;&gt;
+		&lt;p:outputLabel for=&quot;comment&quot; value=&quot;#{I18N['comment']}&quot;/&gt;
+		&lt;p:inputTextarea id=&quot;comment&quot; value=&quot;#{validatorController.comment}&quot;/&gt;
+		&lt;p:message for=&quot;comment&quot;/&gt;
+		&lt;p:commandButton value=&quot;#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
+	&lt;/cf:formLayout&gt;
+&lt;/h:form&gt;
+                    </pre>
+                </p:tab>
+                <p:tab title="ValidatorController.java">
+                    <pre class="brush:java">
+@ViewScoped
+@Named
+public class ValidatorController implements Serializable {
+    @MaxSize(10)
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+}
+                    </pre>
+                </p:tab>
+            </ui:define>
+            
+            <ui:define name="documentation">
+                <strong>Source code</strong>
+                <ul>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/scopes/FlashBeans.java">FlashBeans</a></code></li>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

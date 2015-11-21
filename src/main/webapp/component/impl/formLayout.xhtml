@@ -9,6 +9,7 @@
                 >
     
     <p>Note that as you resize the browser window, the components get re-arranged according to the Bootstrap responsive grid layout.</p>
+    
     <h:form id="simple">
         <p>A simple formLayout.</p>
         <cf:formLayout styleClass="clearfix" style="margin-bottom: 12px;">
@@ -62,6 +63,24 @@
             <p:commandButton value="Help" a:inline="true"/>
             <p:commandButton id="saveAction" value="#{I18N['save']}" update="@form"/>
             <h:outputText a:buttonBar="true" value="Please review your input carefully before clicking the save button."/>
+        </cf:formLayout>
+    </h:form>
+    
+    <h:form id="colspan">
+        <p><code>a:colspan</code> attribute.</p>
+        <cf:formLayout groups="2" groupRatios="4 6 2" styleClass="clearfix" style="margin-bottom: 12px;">
+            <p:outputLabel for="firstName" value="#{I18N['firstName']}"/>
+            <p:inputText a:colspan="2" id="firstName" value="#{formLayoutController.entity.firstName}"/>
+            <p:message for="firstName"/>
+            <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
+            <p:inputText id="lastName" value="#{formLayoutController.entity.lastName}"/>
+            <p:message for="lastName"/>
+            <p:commandButton value="Help" a:inline="true"/>
+            <p:outputLabel for="comment" value="#{I18N['comment']}"/>
+            <p:inputTextarea a:colspan="4" id="comment" value="#{formLayoutController.entity.comment}"/>
+            <p:message for="comment"/>
+            <p:commandButton value="Help" a:inline="true"/>
+            <p:commandButton id="saveAction" value="#{I18N['save']}" update="@form"/>
         </cf:formLayout>
     </h:form>
 </ui:composition>
