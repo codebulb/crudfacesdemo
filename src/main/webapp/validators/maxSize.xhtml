@@ -32,10 +32,10 @@
 &lt;h:form&gt;
 	&lt;p&gt;Validate &lt;code&gt;@MaxSize(10)&lt;/code&gt;&lt;/p&gt;
 	&lt;cf:formLayout style=&quot;width: 50%;&quot;&gt;
-		&lt;p:outputLabel for=&quot;comment&quot; value=&quot;#{I18N['comment']}&quot;/&gt;
-		&lt;p:inputTextarea id=&quot;comment&quot; value=&quot;#{validatorController.comment}&quot;/&gt;
-		&lt;p:message for=&quot;comment&quot;/&gt;
-		&lt;p:commandButton value=&quot;#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
+		&lt;p:outputLabel for=&quot;id&quot; value=&quot;\#{I18N['id']}&quot;/&gt;
+		&lt;p:inputTextarea id=&quot;id&quot; value=&quot;\#{validatorController.id}&quot;/&gt;
+		&lt;p:message for=&quot;id&quot;/&gt;
+		&lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
 	&lt;/cf:formLayout&gt;
 &lt;/h:form&gt;
                     </pre>
@@ -46,14 +46,14 @@
 @Named
 public class ValidatorController implements Serializable {
     @MaxSize(10)
-    private String comment;
+    private String id;
 
-    public String getComment() {
-        return comment;
+    public String getId() {
+        return id;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setId(String id) {
+        this.id = id;
     }
 }
                     </pre>

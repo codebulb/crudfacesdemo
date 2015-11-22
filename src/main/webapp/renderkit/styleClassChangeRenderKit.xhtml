@@ -63,10 +63,10 @@
                     set.</li>
                     </ul>
                     <p>By using a render kit as the trigger, enabling the functionality
-                    globally is still as simple as registering the render kit in web.xml.</p>
+                    globally is still as simple as registering the render kit in faces-config.xml.</p>
                 
                     <h2>Usage</h2>
-                    <p>Activate the render kit in your web.xml:</p>
+                    <p>Activate the render kit in your faces-config.xml:</p>
                     <pre class="brush:xml">
 &lt;factory&gt;
 	&lt;render-kit-factory&gt;ch.codebulb.crudfaces.renderkit.StyleClassChangeRenderKitFactory&lt;/render-kit-factory&gt;
@@ -108,6 +108,7 @@
                 <strong>Source code</strong>
                 <ul>
                     <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/java/ch/codebulb/crudfaces/renderkit/StyleClassChangeRenderKit.java">StyleClassChangeRenderKit</a></code></li>
+                    <li><code><a href="https://github.com/codebulb/crudfaces/blob/master/src/main/resources/META-INF/resources/crudfaces/crudfaces.js">crudfaces.js</a></code></li>
                 </ul>
             </ui:define>
         </ui:composition>

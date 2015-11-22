@@ -9,9 +9,9 @@
     <h:form>
         <p>Validate <code>@MaxSize(10)</code></p>
         <cf:formLayout style="width: 50%;">
-            <p:outputLabel for="comment" value="#{I18N['comment']}"/>
-            <p:inputTextarea id="comment" value="#{validatorController.comment}"/>
-            <p:message for="comment"/>
+            <p:outputLabel for="id" value="#{I18N['id']}"/>
+            <p:inputTextarea id="id" value="#{validatorController.id}"/>
+            <p:message for="id"/>
             <p:commandButton value="#{I18N['save']}" update="@form"/>
         </cf:formLayout>
     </h:form>

@@ -9,13 +9,13 @@ import org.omnifaces.cdi.ViewScoped;
 @Named
 public class ValidatorController implements Serializable {
     @MaxSize(10)
-    private String comment;
+    private String id;
 
-    public String getComment() {
-        return comment;
+    public String getId() {
+        return id;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setId(String id) {
+        this.id = id;
     }
 }

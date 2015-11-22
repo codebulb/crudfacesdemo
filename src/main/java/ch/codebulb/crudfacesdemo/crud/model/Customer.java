@@ -14,7 +14,7 @@ public class Customer extends CrudEntity {
     @NotNull
     @Pattern(regexp = "[^0-9]*", message = "{validation.model.customer.name}")
     private String lastName;
-    @MaxSize(value = 100)
+    @MaxSize(100)
     private String comment;
 
     public String getFirstName() {
