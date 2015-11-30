@@ -41,7 +41,7 @@
                     
                     <h2>Known restrictions</h2>
                     <ul>
-                        <li>Only simple text input PrimeFaces components are supported.</li>
+                        <li>Only some basic PrimeFaces components are supported.</li>
                     </ul>
                     <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
             </ui:define>
@@ -63,6 +63,9 @@
 			&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
 			&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{readOnlyController.entity.lastName}&quot;/&gt;
 			&lt;p:message for=&quot;lastName&quot;/&gt;
+                        &lt;p:outputLabel for=&quot;premium&quot; value=&quot;#{I18N['customer.premium']}&quot;/&gt;
+                        &lt;p:selectBooleanCheckbox id=&quot;premium&quot; value=&quot;#{readOnlyController.entity.premium}&quot;/&gt;
+                        &lt;p:message for=&quot;premium&quot;/&gt;
 			&lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot; 
 							 a:stealth=&quot;\#{readOnlyController.readOnly}&quot; /&gt;
 			&lt;p:commandButton value=&quot;\#{readOnlyController.controlText}&quot;

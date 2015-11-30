@@ -85,6 +85,10 @@
                         <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
                         <p:inputText id="lastName" value="#{entity.lastName}" />
                         <p:message for="lastName"/>
+                        
+                        <p:outputLabel for="premium" value="#{I18N['customer.premium']}"/>
+                        <p:selectBooleanCheckbox id="premium" value="#{entity.premium}"/>
+                        <p:message for="premium"/>
 
                         <p:commandButton styleClass="btn-primary" id="saveAction" value="#{I18N['save']}" 
                                          a:stealth="#{not param.edit}"

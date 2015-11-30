@@ -19,6 +19,9 @@
             <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
             <p:inputText id="lastName" value="#{formLayoutController.entity.lastName}"/>
             <p:message for="lastName"/>
+            <p:outputLabel for="premium" value="#{I18N['customer.premium']}"/>
+            <p:selectBooleanCheckbox id="premium" value="#{formLayoutController.entity.premium}"/>
+            <p:message for="premium"/>
             <p:commandButton value="#{I18N['save']}" update="@form"/>
         </cf:formLayout>
     </h:form>

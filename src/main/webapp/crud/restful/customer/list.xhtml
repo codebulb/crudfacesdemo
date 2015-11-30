@@ -6,7 +6,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:o="http://omnifaces.org/ui"
       xmlns:demo="http://xmlns.jcp.org/jsf/composite/crudfacesdemo"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
         <title>RESTFUL Customer overview - CrudFaces showcase</title>
         <h:outputStylesheet library="css" name="bootstrap-theme.min.css"/>
@@ -78,6 +79,23 @@
             <p>Important: Bind <code>rowKey=&quot;\#{item}&quot;</code> where <code>item</code> is <code>var=&quot;item&quot;</code></p>
         </demo:info>
         
+        <demo:info id="infoBooleanFilter" title="Filter boolean values">
+            <p>In order to create a column filter for boolean values which also allows for a "not selected" option, use the 
+            <code><a href="http://www.primefaces.org/showcase-ext/views/triStateCheckbox.jsf">&lt;pe:triStateCheckbox&gt;</a></code>
+            component provided by the PrimeFaces Extensions component library, and back it with
+            CrudFaces' <code>\#{componentsHelper.filterBoolean}</code> <code>filterFunction</code>:</p>
+            <pre class="brush:xml">
+&lt;p:column headerText=&quot;\#{I18N['customer.premium']}&quot; sortBy=&quot;\#{item.premium}&quot; filterBy=&quot;\#{item.premium}&quot;
+		  filterFunction=&quot;\#{componentsHelper.filterBoolean}&quot; style=&quot;width: 180px;&quot;&gt;
+	&lt;f:facet name=&quot;filter&quot;&gt;
+		&lt;pe:triStateCheckbox onchange=&quot;PF('tableWidget').filter()&quot; value=&quot;2&quot;/&gt;
+	&lt;/f:facet&gt;
+	&lt;h:outputText value=&quot;\#{i18n[item.premium]}&quot;/&gt;
+&lt;/p:column&gt;
+            </pre>
+            <p>Setting <code>value=&quot;2&quot;</code> ensures that by default, no rows are filtered.</p>
+        </demo:info>
+        
         <p:dataTable id="table" widgetVar="tableWidget" value="#{controller.entities}" var="item"
                      emptyMessage="#{I18N['info.dataTable.empty']}"
                      sortMode="multiple" 
@@ -109,6 +127,14 @@
             <p:column headerText="#{I18N['lastName']}" sortBy="#{item.lastName}" filterBy="#{item.lastName}">
                 <h:outputText value="#{item.lastName}"/>
             </p:column>
+            <p:column headerText="#{I18N['customer.premium']}" sortBy="#{item.premium}" filterBy="#{item.premium}"
+                      filterFunction="#{componentsHelper.filterBoolean}" style="width: 180px;">
+                <f:facet name="filter">
+                    <pe:triStateCheckbox onchange="PF('tableWidget').filter()" value="2"/>
+                </f:facet>
+                <h:outputText value="#{i18n[item.premium]}"/>
+            </p:column>
+            
             <p:column headerText="#{I18N['actions']}" class="text-right" style="width: 270px">
                 <p:link outcome="show.xhtml" class="btn btn-default">
                     <f:param name="id" value="#{item.id}"/>

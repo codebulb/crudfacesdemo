@@ -16,6 +16,7 @@ public class Customer extends CrudEntity {
     private String lastName;
     @MaxSize(100)
     private String comment;
+    private boolean premium;
 
     public String getFirstName() {
         return firstName;
@@ -39,5 +40,13 @@ public class Customer extends CrudEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
     }
 }
