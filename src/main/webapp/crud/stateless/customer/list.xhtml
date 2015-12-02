@@ -33,6 +33,8 @@
             <f:viewAction action="#{customerController.initEntities}"/>
         </f:metadata>
         
+        <o:importFunctions type="ch.codebulb.crudfacesdemo.crud.model.Language" />
+        
         <div class="container-fluid">
             
         <p:button outcome="/crud/stateless/index.xhtml" value="Back"/>
@@ -78,6 +80,16 @@
                     <pe:triStateCheckbox onchange="PF('tableWidget').filter()" value="2"/>
                 </f:facet>
                 <h:outputText value="#{i18n[item.premium]}"/>
+            </p:column>
+            <p:column headerText="#{I18N['language']}" sortBy="#{item.mainLanguage}"
+                      filterBy="#{item.mainLanguage.name()}" filterMatchMode="exact" style="width: 180px;">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('tableWidget').filter()">
+                        <f:selectItem value="#{null}" itemLabel="#{I18N['choose.']}"/>
+                        <f:selectItems var="i" value="#{Language:values()}" itemLabel="#{i}" itemValue="#{i.name()}"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{item.mainLanguage.toString()}"/>
             </p:column>
             
             <p:column headerText="#{I18N['actions']}" class="text-right" style="width: 330px">
@@ -173,6 +185,14 @@
                     <p:outputLabel for="premium" value="#{I18N['customer.premium']}"/>
                     <p:selectBooleanCheckbox id="premium" value="#{entity.premium}"/>
                     <p:message for="premium"/>
+                    
+                    <p:outputLabel for="mainLanguage" value="#{I18N['language']}"/>
+                    <p:selectOneMenu id="mainLanguage" value="#{entity.mainLanguage}">
+                        <f:selectItem value="#{null}" itemLabel="#{I18N['choose.']}"/>
+                        <f:selectItems var="item" value="#{Language:values()}" 
+                                       itemLabel="#{item}" />
+                    </p:selectOneMenu>
+                    <p:message for="mainLanguage"/>
 
                     <p:commandButton styleClass="btn-primary" id="saveAction" value="#{I18N['save']}" 
                                      a:stealth="#{not controller.edit}"

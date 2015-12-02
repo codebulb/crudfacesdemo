@@ -6,9 +6,12 @@
                 xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:cf="http://crudfaces.codebulb.ch"
-                >
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <p>Note that as you resize the browser window, the components get re-arranged according to the Bootstrap responsive grid layout.</p>
+    
+    <o:importFunctions type="ch.codebulb.crudfacesdemo.crud.model.Language" />
     
     <h:form id="simple">
         <p>A simple formLayout.</p>
@@ -19,9 +22,6 @@
             <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
             <p:inputText id="lastName" value="#{formLayoutController.entity.lastName}"/>
             <p:message for="lastName"/>
-            <p:outputLabel for="premium" value="#{I18N['customer.premium']}"/>
-            <p:selectBooleanCheckbox id="premium" value="#{formLayoutController.entity.premium}"/>
-            <p:message for="premium"/>
             <p:commandButton value="#{I18N['save']}" update="@form"/>
         </cf:formLayout>
     </h:form>
@@ -76,12 +76,22 @@
             <p:inputText a:colspan="2" id="firstName" value="#{formLayoutController.entity.firstName}"/>
             <p:message for="firstName"/>
             <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
-            <p:inputText id="lastName" value="#{formLayoutController.entity.lastName}"/>
+            <p:inputText a:colspan="2" id="lastName" value="#{formLayoutController.entity.lastName}"/>
             <p:message for="lastName"/>
-            <p:commandButton value="Help" a:inline="true"/>
             <p:outputLabel for="comment" value="#{I18N['comment']}"/>
-            <p:inputTextarea a:colspan="4" id="comment" value="#{formLayoutController.entity.comment}"/>
+            <p:inputTextarea a:colspan="5" id="comment" value="#{formLayoutController.entity.comment}"/>
             <p:message for="comment"/>
+            <p:outputLabel for="premium" value="#{I18N['customer.premium']}"/>
+            <p:selectBooleanCheckbox id="premium" value="#{formLayoutController.entity.premium}"/>
+            <p:message for="premium"/>
+            <p:commandButton value="Help" a:inline="true"/>
+            <p:outputLabel for="mainLanguage" value="#{I18N['language']}"/>
+            <p:selectOneMenu id="mainLanguage" value="#{formLayoutController.entity.mainLanguage}">
+                <f:selectItem value="#{null}" itemLabel="#{I18N['choose.']}"/>
+                <f:selectItems var="item" value="#{Language:values()}" 
+                               itemLabel="#{item}" />
+            </p:selectOneMenu>
+            <p:message for="mainLanguage"/>
             <p:commandButton value="Help" a:inline="true"/>
             <p:commandButton id="saveAction" value="#{I18N['save']}" update="@form"/>
         </cf:formLayout>

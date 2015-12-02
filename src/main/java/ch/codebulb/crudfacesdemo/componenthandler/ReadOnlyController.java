@@ -1,6 +1,6 @@
 package ch.codebulb.crudfacesdemo.componenthandler;
 
-import ch.codebulb.crudfacesdemo.crud.model.Customer;
+import ch.codebulb.crudfacesdemo.crud.model.OptionalCustomer;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -10,7 +10,7 @@ import org.omnifaces.cdi.ViewScoped;
 @Named
 public class ReadOnlyController implements Serializable {
     private boolean readOnly = false;
-    private Customer entity = new Customer();
+    private OptionalCustomer entity = new OptionalCustomer();
     
     @PostConstruct
     protected void initEntity() {
@@ -33,11 +33,11 @@ public class ReadOnlyController implements Serializable {
         this.readOnly = readOnly;
     }
 
-    public Customer getEntity() {
+    public OptionalCustomer getEntity() {
         return entity;
     }
 
-    public void setEntity(Customer entity) {
+    public void setEntity(OptionalCustomer entity) {
         this.entity = entity;
     }
 }

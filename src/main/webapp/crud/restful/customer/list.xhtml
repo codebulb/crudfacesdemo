@@ -31,6 +31,8 @@
             <f:viewAction action="#{customerController.initEntities}"/>
         </f:metadata>
         
+        <o:importFunctions type="ch.codebulb.crudfacesdemo.crud.model.Language" />
+        
         <div class="container-fluid">
             
         <p:button outcome="/crud/restful/index.xhtml" value="Back"/>
@@ -96,6 +98,39 @@
             <p>Setting <code>value=&quot;2&quot;</code> ensures that by default, no rows are filtered.</p>
         </demo:info>
         
+        <demo:info id="infoEnumFilter" title="Filter enum values">
+            <p>In order to create a column filter for enum values, build a <code>filterBy="\#{item.mainLanguage.name()}"</code>
+                with <code>filterMatchMode="exact"</code>:</p>
+            <pre class="brush:xml">
+&lt;o:importFunctions type=&quot;ch.codebulb.crudfacesdemo.crud.model.Language&quot; /&gt;
+...
+&lt;p:column headerText=&quot;\#{I18N['language']}&quot; sortBy=&quot;\#{item.mainLanguage}&quot;
+		  filterBy=&quot;\#{item.mainLanguage.name()}&quot; filterMatchMode=&quot;exact&quot; style=&quot;width: 180px;&quot;&gt;
+	&lt;f:facet name=&quot;filter&quot;&gt;
+		&lt;p:selectOneMenu onchange=&quot;PF('tableWidget').filter()&quot;&gt;
+			&lt;f:selectItem value=&quot;\#{null}&quot; itemLabel=&quot;\#{I18N['choose.']}&quot;/&gt;
+			&lt;f:selectItems var=&quot;i&quot; value=&quot;\#{Language:values()}&quot; itemLabel=&quot;\#{i}&quot; itemValue=&quot;\#{i.name()}&quot;/&gt;
+		&lt;/p:selectOneMenu&gt;
+	&lt;/f:facet&gt;
+	&lt;h:outputText value=&quot;\#{item.mainLanguage.toString()}&quot;/&gt;
+&lt;/p:column&gt;
+            </pre>
+            <p>Here, OmniFaces' <code>&lt;o:importFunctions&gt;</code> is used to get the Set of Enum <code>values()</code>;
+                I have explained this technique <a href="http://www.codebulb.ch/2015/08/jsf-jee-enums-best-practices.html#jsf">in this blog post</a>.</p>
+            <p>Also note that here, the Enum's <code>#toString()</code> method handles I18N, therefore use <code>#name()</code> explicitly
+                where you want to refer to the Enum name:</p>
+            <pre class="brush:java">
+public enum Language {
+    en, es, fr, de;
+
+    @Override
+    public String toString() {
+        return FacesHelper.i18n(&quot;language.&quot; + name());
+    }
+}
+            </pre>
+        </demo:info>
+        
         <p:dataTable id="table" widgetVar="tableWidget" value="#{controller.entities}" var="item"
                      emptyMessage="#{I18N['info.dataTable.empty']}"
                      sortMode="multiple" 
@@ -133,6 +168,16 @@
                     <pe:triStateCheckbox onchange="PF('tableWidget').filter()" value="2"/>
                 </f:facet>
                 <h:outputText value="#{i18n[item.premium]}"/>
+            </p:column>
+            <p:column headerText="#{I18N['language']}" sortBy="#{item.mainLanguage}"
+                      filterBy="#{item.mainLanguage.name()}" filterMatchMode="exact" style="width: 180px;">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('tableWidget').filter()">
+                        <f:selectItem value="#{null}" itemLabel="#{I18N['choose.']}"/>
+                        <f:selectItems var="i" value="#{Language:values()}" itemLabel="#{i}" itemValue="#{i.name()}"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{item.mainLanguage.toString()}"/>
             </p:column>
             
             <p:column headerText="#{I18N['actions']}" class="text-right" style="width: 270px">

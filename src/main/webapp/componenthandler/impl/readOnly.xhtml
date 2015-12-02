@@ -6,8 +6,11 @@
                 xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:cf="http://crudfaces.codebulb.ch"
-                >
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <o:importFunctions type="ch.codebulb.crudfacesdemo.crud.model.Language" />
+    
     <h:form>
         <p:focus for="firstName"/>
         <cf:readOnly disabled="#{not readOnlyController.readOnly}">
@@ -24,6 +27,13 @@
                 <p:outputLabel for="premium" value="#{I18N['customer.premium']}"/>
                 <p:selectBooleanCheckbox id="premium" value="#{readOnlyController.entity.premium}"/>
                 <p:message for="premium"/>
+                <p:outputLabel for="mainLanguage" value="#{I18N['language']}"/>
+                <p:selectOneMenu id="mainLanguage" value="#{readOnlyController.entity.mainLanguage}">
+                    <f:selectItem value="#{null}" itemLabel="#{I18N['choose.']}"/>
+                    <f:selectItems var="item" value="#{Language:values()}" 
+                                   itemLabel="#{item}" />
+                </p:selectOneMenu>
+                <p:message for="mainLanguage"/>
                 <p:commandButton value="#{I18N['save']}" update="@form" 
                                  a:stealth="#{readOnlyController.readOnly}" />
                 <p:commandButton value="#{readOnlyController.controlText}"

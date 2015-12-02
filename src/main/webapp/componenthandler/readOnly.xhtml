@@ -53,26 +53,38 @@
             <ui:define name="code-tabs">
                 <p:tab title="index.xhtml">
                     <pre class="brush:xml">
+&lt;o:importFunctions type=&quot;ch.codebulb.crudfacesdemo.crud.model.Language&quot; /&gt;
+
 &lt;h:form&gt;
-	&lt;p:focus for=&quot;firstName&quot;/&gt;
-	&lt;cf:readOnly disabled=&quot;\#{not readOnlyController.readOnly}&quot;&gt;
-		&lt;cf:formLayout style=&quot;width: 50%&quot;&gt;
-			&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
-			&lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{readOnlyController.entity.firstName}&quot;/&gt;
-			&lt;p:message for=&quot;firstName&quot;/&gt;
-			&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
-			&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{readOnlyController.entity.lastName}&quot;/&gt;
-			&lt;p:message for=&quot;lastName&quot;/&gt;
-                        &lt;p:outputLabel for=&quot;premium&quot; value=&quot;#{I18N['customer.premium']}&quot;/&gt;
-                        &lt;p:selectBooleanCheckbox id=&quot;premium&quot; value=&quot;#{readOnlyController.entity.premium}&quot;/&gt;
-                        &lt;p:message for=&quot;premium&quot;/&gt;
-			&lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot; 
-							 a:stealth=&quot;\#{readOnlyController.readOnly}&quot; /&gt;
-			&lt;p:commandButton value=&quot;\#{readOnlyController.controlText}&quot;
-							 action=&quot;\#{readOnlyController.switchReadOnly()}&quot;
-							 update=&quot;@form&quot; process=&quot;@this&quot;/&gt;
-		&lt;/cf:formLayout&gt;
-	&lt;/cf:readOnly&gt;
+    &lt;p:focus for=&quot;firstName&quot;/&gt;
+    &lt;cf:readOnly disabled=&quot;\#{not readOnlyController.readOnly}&quot;&gt;
+        &lt;cf:formLayout style=&quot;width: 50%&quot;&gt;
+            &lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+            &lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{readOnlyController.entity.firstName}&quot;/&gt;
+            &lt;p:message for=&quot;firstName&quot;/&gt;
+            &lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+            &lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{readOnlyController.entity.lastName}&quot;/&gt;
+            &lt;p:message for=&quot;lastName&quot;/&gt;
+            &lt;p:outputLabel for=&quot;comment&quot; value=&quot;\#{I18N['comment']}&quot;/&gt;
+            &lt;p:inputTextarea id=&quot;comment&quot; value=&quot;\#{readOnlyController.entity.comment}&quot;/&gt;
+            &lt;p:message for=&quot;comment&quot;/&gt;
+            &lt;p:outputLabel for=&quot;premium&quot; value=&quot;\#{I18N['customer.premium']}&quot;/&gt;
+            &lt;p:selectBooleanCheckbox id=&quot;premium&quot; value=&quot;\#{readOnlyController.entity.premium}&quot;/&gt;
+            &lt;p:message for=&quot;premium&quot;/&gt;
+            &lt;p:outputLabel for=&quot;mainLanguage&quot; value=&quot;\#{I18N['language']}&quot;/&gt;
+            &lt;p:selectOneMenu id=&quot;mainLanguage&quot; value=&quot;\#{readOnlyController.entity.mainLanguage}&quot;&gt;
+                &lt;f:selectItem value=&quot;\#{null}&quot; itemLabel=&quot;\#{I18N['choose.']}&quot;/&gt;
+                &lt;f:selectItems var=&quot;item&quot; value=&quot;\#{Language:values()}&quot; 
+                               itemLabel=&quot;\#{item}&quot; /&gt;
+            &lt;/p:selectOneMenu&gt;
+            &lt;p:message for=&quot;mainLanguage&quot;/&gt;
+            &lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot; 
+                             a:stealth=&quot;\#{readOnlyController.readOnly}&quot; /&gt;
+            &lt;p:commandButton value=&quot;\#{readOnlyController.controlText}&quot;
+                             action=&quot;\#{readOnlyController.switchReadOnly()}&quot;
+                             update=&quot;@form&quot; process=&quot;@this&quot;/&gt;
+        &lt;/cf:formLayout&gt;
+    &lt;/cf:readOnly&gt;
 &lt;/h:form&gt;
                     </pre>
                 </p:tab>
@@ -82,7 +94,7 @@
 @Named
 public class ReadOnlyController implements Serializable {
     private boolean readOnly = false;
-    private Customer entity = new Customer();
+    private OptionalCustomer entity = new OptionalCustomer();
     
     @PostConstruct
     protected void initEntity() {
@@ -105,12 +117,71 @@ public class ReadOnlyController implements Serializable {
         this.readOnly = readOnly;
     }
 
-    public Customer getEntity() {
+    public OptionalCustomer getEntity() {
         return entity;
     }
 
-    public void setEntity(Customer entity) {
+    public void setEntity(OptionalCustomer entity) {
         this.entity = entity;
+    }
+}
+                    </pre>
+                </p:tab>
+                <p:tab title="OptionalCustomer.java">
+                    <pre class="brush:java">
+/**
+ * An alternative {@link Customer} implementation with no properties marked as &quot;required&quot;.
+ */
+@Entity
+public class OptionalCustomer extends CrudEntity {
+    @Pattern(regexp = &quot;[^0-9]*&quot;, message = &quot;{validation.model.customer.name}&quot;)
+    private String firstName;
+    @Pattern(regexp = &quot;[^0-9]*&quot;, message = &quot;{validation.model.customer.name}&quot;)
+    private String lastName;
+    @MaxSize(100)
+    private String comment;
+    private boolean premium;
+    @Enumerated(EnumType.STRING)
+    private Language mainLanguage;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
+    }
+
+    public Language getMainLanguage() {
+        return mainLanguage;
+    }
+
+    public void setMainLanguage(Language mainLanguage) {
+        this.mainLanguage = mainLanguage;
     }
 }
                     </pre>

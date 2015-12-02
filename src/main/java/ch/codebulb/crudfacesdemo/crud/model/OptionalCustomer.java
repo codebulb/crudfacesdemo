@@ -5,22 +5,21 @@ import ch.codebulb.crudfaces.validation.constraints.MaxSize;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+/**
+ * An alternative {@link Customer} implementation with no properties marked as "required".
+ */
 @Entity
-public class Customer extends CrudEntity {
-    @NotNull
+public class OptionalCustomer extends CrudEntity {
     @Pattern(regexp = "[^0-9]*", message = "{validation.model.customer.name}")
     private String firstName;
-    @NotNull
     @Pattern(regexp = "[^0-9]*", message = "{validation.model.customer.name}")
     private String lastName;
     @MaxSize(100)
     private String comment;
     private boolean premium;
     @Enumerated(EnumType.STRING)
-    @NotNull
     private Language mainLanguage;
 
     public String getFirstName() {
