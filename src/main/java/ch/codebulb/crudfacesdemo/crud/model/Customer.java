@@ -2,9 +2,12 @@ package ch.codebulb.crudfacesdemo.crud.model;
 
 import ch.codebulb.crudfaces.model.CrudEntity;
 import ch.codebulb.crudfaces.validation.constraints.MaxSize;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -22,6 +25,9 @@ public class Customer extends CrudEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     private Language mainLanguage;
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    private Date joinDate;
 
     public String getFirstName() {
         return firstName;
@@ -61,5 +67,13 @@ public class Customer extends CrudEntity {
 
     public void setMainLanguage(Language mainLanguage) {
         this.mainLanguage = mainLanguage;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
     }
 }

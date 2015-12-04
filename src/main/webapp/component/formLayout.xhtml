@@ -8,7 +8,7 @@
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">formLayout</ui:define>
-            <ui:define name="status-label"><demo:status value="P"/></ui:define>
+            <ui:define name="status-label"><demo:status value="W"/></ui:define>
             <ui:define name="breadcrumb">
                 <li>components</li>
             </ui:define>
@@ -74,6 +74,10 @@
                 it’s really just for layouting purposes which leaves you the free
                 choice of how to integrate it in an actual HTML form.</p>
                 
+                <h2>Usage</h2>
+                <p>Add the CrudFaces Facelets library declaration <code>xmlns:cf=&quot;http://crudfaces.codebulb.ch&quot;</code>
+                and use the <code>&lt;cf:formLayout&gt;</code> component as shown in the demo below.</p>
+                
                 <h2>Global overrides</h2>
                 <p>The <code>FormLayout</code> class provides the following hooks to override
                 its default configuration globally:</p>
@@ -110,9 +114,16 @@
                 
                 <h2>Known restrictions</h2>
                 <ul>
-                    <li>Only some basic PrimeFaces components are supported.</li>
+                    <li>Only basic PrimeFaces components are supported.</li>
                     <li>Nesting <code>&lt;cf:formLayout&gt;</code>s is not supported.</li>
                     <li>Support for custom styling still is limited.</li>
+                    <li>A “component group” must always be completed; incomplete groups are not
+                    rendered. For instance, when working with a <code>&lt;cf:formLayout
+                    groupRatios="4 6 2"&gt;</code>, which has 3 components per group (e.g. a
+                    label, an input component, and a help button), and you put only 2
+                    components in the last group (e.g. a label and an input component),
+                    this group will not be rendered. This applies to <code>a:colspan</code> usage as
+                    well.</li>
                 </ul>
                 <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
             </ui:define>
@@ -125,91 +136,100 @@
                 <p:tab title="index.xhtml">
                     <pre class="brush:xml">
 &lt;p&gt;Note that as you resize the browser window, the components get re-arranged according to the Bootstrap responsive grid layout.&lt;/p&gt;
-    
+
 &lt;o:importFunctions type=&quot;ch.codebulb.crudfacesdemo.crud.model.Language&quot; /&gt;
 
 &lt;h:form id=&quot;simple&quot;&gt;
-	&lt;p&gt;A simple formLayout.&lt;/p&gt;
-	&lt;cf:formLayout styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
-		&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
-		&lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
-		&lt;p:message for=&quot;firstName&quot;/&gt;
-		&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
-		&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
-		&lt;p:message for=&quot;lastName&quot;/&gt;
-		&lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
-	&lt;/cf:formLayout&gt;
+    &lt;p&gt;A simple formLayout.&lt;/p&gt;
+    &lt;cf:formLayout styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
+        &lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+        &lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
+        &lt;p:message for=&quot;firstName&quot;/&gt;
+        &lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+        &lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
+        &lt;p:message for=&quot;lastName&quot;/&gt;
+        &lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
+    &lt;/cf:formLayout&gt;
 &lt;/h:form&gt;
 
 &lt;h:form id=&quot;groups&quot;&gt;
-	&lt;p&gt;User-defined number of groups per row.&lt;/p&gt;
-	&lt;cf:formLayout groups=&quot;2&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
-		&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
-		&lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
-		&lt;p:message for=&quot;firstName&quot;/&gt;
-		&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
-		&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
-		&lt;p:message for=&quot;lastName&quot;/&gt;
-		&lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
-	&lt;/cf:formLayout&gt;
+    &lt;p&gt;User-defined number of groups per row.&lt;/p&gt;
+    &lt;cf:formLayout groups=&quot;2&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
+        &lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+        &lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
+        &lt;p:message for=&quot;firstName&quot;/&gt;
+        &lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+        &lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
+        &lt;p:message for=&quot;lastName&quot;/&gt;
+        &lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
+    &lt;/cf:formLayout&gt;
 &lt;/h:form&gt;
 
 &lt;h:form id=&quot;groupsRatios&quot;&gt;
-	&lt;p&gt;User-defined group column aspect ratio.&lt;/p&gt;
-	&lt;cf:formLayout groups=&quot;2&quot; groupRatios=&quot;2 10&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
-		&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
-		&lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
-		&lt;p:message for=&quot;firstName&quot;/&gt;
-		&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
-		&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
-		&lt;p:message for=&quot;lastName&quot;/&gt;
-		&lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
-	&lt;/cf:formLayout&gt;
+    &lt;p&gt;User-defined group column aspect ratio.&lt;/p&gt;
+    &lt;cf:formLayout groups=&quot;2&quot; groupRatios=&quot;2 10&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
+        &lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+        &lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
+        &lt;p:message for=&quot;firstName&quot;/&gt;
+        &lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+        &lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
+        &lt;p:message for=&quot;lastName&quot;/&gt;
+        &lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
+    &lt;/cf:formLayout&gt;
 &lt;/h:form&gt;
 
 &lt;h:form id=&quot;buttons&quot;&gt;
-	&lt;p:defaultCommand target=&quot;saveAction&quot;/&gt;
-	&lt;p&gt;User-defined button placement.&lt;/p&gt;
-	&lt;cf:formLayout groups=&quot;2&quot; groupRatios=&quot;4 6 2&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
-		&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
-		&lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
-		&lt;p:message for=&quot;firstName&quot;/&gt;
-		&lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
-		&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
-		&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
-		&lt;p:message for=&quot;lastName&quot;/&gt;
-		&lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
-		&lt;p:commandButton id=&quot;saveAction&quot; value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
-		&lt;h:outputText a:buttonBar=&quot;true&quot; value=&quot;Please review your input carefully before clicking the save button.&quot;/&gt;
-	&lt;/cf:formLayout&gt;
+    &lt;p:defaultCommand target=&quot;saveAction&quot;/&gt;
+    &lt;p&gt;User-defined button placement.&lt;/p&gt;
+    &lt;cf:formLayout groups=&quot;2&quot; groupRatios=&quot;4 6 2&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
+        &lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+        &lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
+        &lt;p:message for=&quot;firstName&quot;/&gt;
+        &lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
+        &lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+        &lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
+        &lt;p:message for=&quot;lastName&quot;/&gt;
+        &lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
+        &lt;p:commandButton id=&quot;saveAction&quot; value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
+        &lt;h:outputText a:buttonBar=&quot;true&quot; value=&quot;Please review your input carefully before clicking the save button.&quot;/&gt;
+    &lt;/cf:formLayout&gt;
 &lt;/h:form&gt;
 
 &lt;h:form id=&quot;colspan&quot;&gt;
-	&lt;p&gt;&lt;code&gt;a:colspan&lt;/code&gt; attribute.&lt;/p&gt;
-	&lt;cf:formLayout groups=&quot;2&quot; groupRatios=&quot;4 6 2&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
-		&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
-		&lt;p:inputText a:colspan=&quot;2&quot; id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
-		&lt;p:message for=&quot;firstName&quot;/&gt;
-		&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
-		&lt;p:inputText a:colspan=&quot;2&quot; id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
-		&lt;p:message for=&quot;lastName&quot;/&gt;
-		&lt;p:outputLabel for=&quot;comment&quot; value=&quot;\#{I18N['comment']}&quot;/&gt;
-		&lt;p:inputTextarea a:colspan=&quot;5&quot; id=&quot;comment&quot; value=&quot;\#{formLayoutController.entity.comment}&quot;/&gt;
-		&lt;p:message for=&quot;comment&quot;/&gt;
-		&lt;p:outputLabel for=&quot;premium&quot; value=&quot;\#{I18N['customer.premium']}&quot;/&gt;
-		&lt;p:selectBooleanCheckbox id=&quot;premium&quot; value=&quot;\#{formLayoutController.entity.premium}&quot;/&gt;
-		&lt;p:message for=&quot;premium&quot;/&gt;
-		&lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
-		&lt;p:outputLabel for=&quot;mainLanguage&quot; value=&quot;\#{I18N['language']}&quot;/&gt;
-		&lt;p:selectOneMenu id=&quot;mainLanguage&quot; value=&quot;\#{formLayoutController.entity.mainLanguage}&quot;&gt;
-			&lt;f:selectItem value=&quot;\#{null}&quot; itemLabel=&quot;\#{I18N['choose.']}&quot;/&gt;
-			&lt;f:selectItems var=&quot;item&quot; value=&quot;\#{Language:values()}&quot; 
-						   itemLabel=&quot;\#{item}&quot; /&gt;
-		&lt;/p:selectOneMenu&gt;
-		&lt;p:message for=&quot;mainLanguage&quot;/&gt;
-		&lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
-		&lt;p:commandButton id=&quot;saveAction&quot; value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
-	&lt;/cf:formLayout&gt;
+    &lt;p&gt;&lt;code&gt;a:colspan&lt;/code&gt; attribute.&lt;/p&gt;
+    &lt;cf:formLayout groups=&quot;2&quot; groupRatios=&quot;4 6 2&quot; styleClass=&quot;clearfix&quot; style=&quot;margin-bottom: 12px;&quot;&gt;
+        &lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+        &lt;p:inputText a:colspan=&quot;2&quot; id=&quot;firstName&quot; value=&quot;\#{formLayoutController.entity.firstName}&quot;/&gt;
+        &lt;p:message for=&quot;firstName&quot;/&gt;
+
+        &lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+        &lt;p:inputText a:colspan=&quot;2&quot; id=&quot;lastName&quot; value=&quot;\#{formLayoutController.entity.lastName}&quot;/&gt;
+        &lt;p:message for=&quot;lastName&quot;/&gt;
+
+        &lt;p:outputLabel for=&quot;comment&quot; value=&quot;\#{I18N['comment']}&quot;/&gt;
+        &lt;p:inputTextarea a:colspan=&quot;5&quot; id=&quot;comment&quot; value=&quot;\#{formLayoutController.entity.comment}&quot;/&gt;
+        &lt;p:message for=&quot;comment&quot;/&gt;
+
+        &lt;p:outputLabel for=&quot;premium&quot; value=&quot;\#{I18N['customer.premium']}&quot;/&gt;
+        &lt;p:selectBooleanCheckbox id=&quot;premium&quot; value=&quot;\#{formLayoutController.entity.premium}&quot;/&gt;
+        &lt;p:message for=&quot;premium&quot;/&gt;
+        &lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
+
+        &lt;p:outputLabel for=&quot;mainLanguage&quot; value=&quot;\#{I18N['language']}&quot;/&gt;
+        &lt;p:selectOneMenu id=&quot;mainLanguage&quot; value=&quot;\#{formLayoutController.entity.mainLanguage}&quot;&gt;
+            &lt;f:selectItem value=&quot;\#{null}&quot; itemLabel=&quot;\#{I18N['choose.']}&quot;/&gt;
+            &lt;f:selectItems var=&quot;item&quot; value=&quot;\#{Language:values()}&quot; itemLabel=&quot;\#{item}&quot; /&gt;
+        &lt;/p:selectOneMenu&gt;
+        &lt;p:message for=&quot;mainLanguage&quot;/&gt;
+        &lt;p:commandButton value=&quot;Help&quot; a:inline=&quot;true&quot;/&gt;
+
+        &lt;p:outputLabel for=&quot;joinDate&quot; value=&quot;\#{I18N['customer.joinDate']}&quot;/&gt;
+        &lt;p:calendar a:colspan=&quot;2&quot; id=&quot;joinDate&quot; value=&quot;\#{formLayoutController.entity.joinDate}&quot;
+                    pattern=&quot;\#{i18n['format.calendar']}&quot;/&gt;
+        &lt;p:message for=&quot;joinDate&quot;/&gt;
+
+        &lt;p:commandButton id=&quot;saveAction&quot; value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot;/&gt;
+    &lt;/cf:formLayout&gt;
 &lt;/h:form&gt;
                     </pre>
                 </p:tab>

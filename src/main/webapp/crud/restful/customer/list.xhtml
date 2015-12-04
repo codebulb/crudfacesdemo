@@ -31,6 +31,7 @@
             <f:viewAction action="#{customerController.initEntities}"/>
         </f:metadata>
         
+        <o:importFunctions type="ch.codebulb.crudfaces.util.StringsHelper" var="strings" />
         <o:importFunctions type="ch.codebulb.crudfacesdemo.crud.model.Language" />
         
         <div class="container-fluid">
@@ -178,6 +179,15 @@ public enum Language {
                     </p:selectOneMenu>
                 </f:facet>
                 <h:outputText value="#{item.mainLanguage.toString()}"/>
+            </p:column>
+            <p:column headerText="#{I18N['customer.joinDate']}" sortBy="#{item.joinDate}" filterBy="#{item.joinDate}"
+                      filterMatchMode="exact" style="width: 180px;">
+                <f:facet name="filter">
+                    <p:calendar onchange="PF('tableWidget').filter()" pattern="#{i18n['format.calendar']}">
+                        <p:ajax event="dateSelect"  oncomplete="PF('tableWidget').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{strings:formatDate(item.joinDate)}"/>
             </p:column>
             
             <p:column headerText="#{I18N['actions']}" class="text-right" style="width: 270px">

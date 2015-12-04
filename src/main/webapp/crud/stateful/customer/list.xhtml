@@ -33,6 +33,7 @@
             <f:viewAction action="#{customerController.initEntities}"/>
         </f:metadata>
         
+        <o:importFunctions type="ch.codebulb.crudfaces.util.StringsHelper" var="strings" />
         <o:importFunctions type="ch.codebulb.crudfacesdemo.crud.model.Language" />
         
         <div class="container-fluid">
@@ -104,6 +105,15 @@
                 </f:facet>
                 <h:outputText value="#{item.mainLanguage.toString()}"/>
             </p:column>
+            <p:column headerText="#{I18N['customer.joinDate']}" sortBy="#{item.joinDate}" filterBy="#{item.joinDate}"
+                      filterMatchMode="exact" style="width: 180px;">
+                <f:facet name="filter">
+                    <p:calendar onchange="PF('tableWidget').filter()" pattern="#{i18n['format.calendar']}">
+                        <p:ajax event="dateSelect"  oncomplete="PF('tableWidget').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{strings:formatDate(item.joinDate)}"/>
+            </p:column>
             
             <p:column headerText="#{I18N['actions']}" class="text-right" style="width: 330px">
                 <p:commandLink id="viewAction" action="#{controller.setSelectedEntity(item)}" class="btn btn-default cf-row-action-button"
@@ -165,10 +175,14 @@
                     <p:outputLabel for="mainLanguage" value="#{I18N['language']}"/>
                     <p:selectOneMenu id="mainLanguage" value="#{entity.mainLanguage}">
                         <f:selectItem value="#{null}" itemLabel="#{I18N['choose.']}"/>
-                        <f:selectItems var="item" value="#{Language:values()}" 
-                                       itemLabel="#{item}" />
+                        <f:selectItems var="item" value="#{Language:values()}" itemLabel="#{item}" />
                     </p:selectOneMenu>
                     <p:message for="mainLanguage"/>
+                    
+                    <p:outputLabel for="joinDate" value="#{I18N['customer.joinDate']}"/>
+                    <p:calendar id="joinDate" value="#{entity.joinDate}"
+                                pattern="#{i18n['format.calendar']}"/>
+                    <p:message for="joinDate"/>
 
                     <p:commandButton styleClass="btn-primary" id="saveAction" value="#{I18N['save']}" 
                                      a:stealth="#{not controller.edit}"

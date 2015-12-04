@@ -8,7 +8,7 @@
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">readOnly</ui:define>
-            <ui:define name="status-label"><demo:status value="P"/></ui:define>
+            <ui:define name="status-label"><demo:status value="W"/></ui:define>
             <ui:define name="breadcrumb">
                 <li>componenthandlers</li>
             </ui:define>
@@ -34,14 +34,17 @@
                     <code>&lt;message&gt;</code>, or a <code>&lt;p:focus&gt;</code> component, hence preventing “target not found”
                     errors.</p>
                     <h2>Usage</h2>
-                    <p>Using the tag is somewhat similar to OmniFaces’ <code>&lt;o:massAttribute&gt;</code> tag: Just
+                    <p>Add the CrudFaces Facelets library declaration <code>xmlns:cf=&quot;http://crudfaces.codebulb.ch&quot;</code>
+                    and use the <code>&lt;cf:readOnly&gt;</code> component as shown in the demo below.</p>
+                    
+                    <p>Its usage is quite similar to OmniFaces’ <code>&lt;o:massAttribute&gt;</code> tag: Just
                     surround the component(s) in question with the tag. Of course, you can
                     switch between input and output rendering conditionally using the
                     component’s <code>disabled</code> attribute.</p>
                     
                     <h2>Known restrictions</h2>
                     <ul>
-                        <li>Only some basic PrimeFaces components are supported.</li>
+                        <li>Only basic PrimeFaces components are supported.</li>
                     </ul>
                     <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>
             </ui:define>
@@ -56,35 +59,44 @@
 &lt;o:importFunctions type=&quot;ch.codebulb.crudfacesdemo.crud.model.Language&quot; /&gt;
 
 &lt;h:form&gt;
-    &lt;p:focus for=&quot;firstName&quot;/&gt;
-    &lt;cf:readOnly disabled=&quot;\#{not readOnlyController.readOnly}&quot;&gt;
-        &lt;cf:formLayout style=&quot;width: 50%&quot;&gt;
-            &lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
-            &lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{readOnlyController.entity.firstName}&quot;/&gt;
-            &lt;p:message for=&quot;firstName&quot;/&gt;
-            &lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
-            &lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{readOnlyController.entity.lastName}&quot;/&gt;
-            &lt;p:message for=&quot;lastName&quot;/&gt;
-            &lt;p:outputLabel for=&quot;comment&quot; value=&quot;\#{I18N['comment']}&quot;/&gt;
-            &lt;p:inputTextarea id=&quot;comment&quot; value=&quot;\#{readOnlyController.entity.comment}&quot;/&gt;
-            &lt;p:message for=&quot;comment&quot;/&gt;
-            &lt;p:outputLabel for=&quot;premium&quot; value=&quot;\#{I18N['customer.premium']}&quot;/&gt;
-            &lt;p:selectBooleanCheckbox id=&quot;premium&quot; value=&quot;\#{readOnlyController.entity.premium}&quot;/&gt;
-            &lt;p:message for=&quot;premium&quot;/&gt;
-            &lt;p:outputLabel for=&quot;mainLanguage&quot; value=&quot;\#{I18N['language']}&quot;/&gt;
-            &lt;p:selectOneMenu id=&quot;mainLanguage&quot; value=&quot;\#{readOnlyController.entity.mainLanguage}&quot;&gt;
-                &lt;f:selectItem value=&quot;\#{null}&quot; itemLabel=&quot;\#{I18N['choose.']}&quot;/&gt;
-                &lt;f:selectItems var=&quot;item&quot; value=&quot;\#{Language:values()}&quot; 
-                               itemLabel=&quot;\#{item}&quot; /&gt;
-            &lt;/p:selectOneMenu&gt;
-            &lt;p:message for=&quot;mainLanguage&quot;/&gt;
-            &lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot; 
-                             a:stealth=&quot;\#{readOnlyController.readOnly}&quot; /&gt;
-            &lt;p:commandButton value=&quot;\#{readOnlyController.controlText}&quot;
-                             action=&quot;\#{readOnlyController.switchReadOnly()}&quot;
-                             update=&quot;@form&quot; process=&quot;@this&quot;/&gt;
-        &lt;/cf:formLayout&gt;
-    &lt;/cf:readOnly&gt;
+	&lt;p:focus for=&quot;firstName&quot;/&gt;
+	&lt;cf:readOnly disabled=&quot;\#{not readOnlyController.readOnly}&quot;&gt;
+		&lt;cf:formLayout style=&quot;width: 50%&quot;&gt;
+			&lt;p:outputLabel for=&quot;firstName&quot; value=&quot;\#{I18N['firstName']}&quot;/&gt;
+			&lt;p:inputText id=&quot;firstName&quot; value=&quot;\#{readOnlyController.entity.firstName}&quot;/&gt;
+			&lt;p:message for=&quot;firstName&quot;/&gt;
+			
+			&lt;p:outputLabel for=&quot;lastName&quot; value=&quot;\#{I18N['lastName']}&quot;/&gt;
+			&lt;p:inputText id=&quot;lastName&quot; value=&quot;\#{readOnlyController.entity.lastName}&quot;/&gt;
+			&lt;p:message for=&quot;lastName&quot;/&gt;
+			
+			&lt;p:outputLabel for=&quot;comment&quot; value=&quot;\#{I18N['comment']}&quot;/&gt;
+			&lt;p:inputTextarea id=&quot;comment&quot; value=&quot;\#{readOnlyController.entity.comment}&quot;/&gt;
+			&lt;p:message for=&quot;comment&quot;/&gt;
+			
+			&lt;p:outputLabel for=&quot;premium&quot; value=&quot;\#{I18N['customer.premium']}&quot;/&gt;
+			&lt;p:selectBooleanCheckbox id=&quot;premium&quot; value=&quot;\#{readOnlyController.entity.premium}&quot;/&gt;
+			&lt;p:message for=&quot;premium&quot;/&gt;
+			
+			&lt;p:outputLabel for=&quot;mainLanguage&quot; value=&quot;\#{I18N['language']}&quot;/&gt;
+			&lt;p:selectOneMenu id=&quot;mainLanguage&quot; value=&quot;\#{readOnlyController.entity.mainLanguage}&quot;&gt;
+				&lt;f:selectItem value=&quot;\#{null}&quot; itemLabel=&quot;\#{I18N['choose.']}&quot;/&gt;
+				&lt;f:selectItems var=&quot;item&quot; value=&quot;\#{Language:values()}&quot; itemLabel=&quot;\#{item}&quot; /&gt;
+			&lt;/p:selectOneMenu&gt;
+			&lt;p:message for=&quot;mainLanguage&quot;/&gt;
+			
+			&lt;p:outputLabel for=&quot;joinDate&quot; value=&quot;\#{I18N['customer.joinDate']}&quot;/&gt;
+			&lt;p:calendar id=&quot;joinDate&quot; value=&quot;\#{readOnlyController.entity.joinDate}&quot;
+						pattern=&quot;\#{i18n['format.calendar']}&quot;/&gt;
+			&lt;p:message for=&quot;joinDate&quot;/&gt;
+		
+			&lt;p:commandButton value=&quot;\#{I18N['save']}&quot; update=&quot;@form&quot; 
+							 a:stealth=&quot;\#{readOnlyController.readOnly}&quot; /&gt;
+			&lt;p:commandButton value=&quot;\#{readOnlyController.controlText}&quot;
+							 action=&quot;\#{readOnlyController.switchReadOnly()}&quot;
+							 update=&quot;@form&quot; process=&quot;@this&quot;/&gt;
+		&lt;/cf:formLayout&gt;
+	&lt;/cf:readOnly&gt;
 &lt;/h:form&gt;
                     </pre>
                 </p:tab>

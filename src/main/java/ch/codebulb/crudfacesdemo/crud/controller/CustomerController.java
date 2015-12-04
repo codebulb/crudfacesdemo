@@ -1,6 +1,6 @@
 package ch.codebulb.crudfacesdemo.crud.controller;
 
-import ch.codebulb.crudfaces.controller.CrudTableController;
+import ch.codebulb.crudfaces.controller.CrudController;
 import ch.codebulb.crudfaces.service.CrudService;
 import ch.codebulb.crudfacesdemo.crud.model.Customer;
 import ch.codebulb.crudfacesdemo.crud.service.CustomerService;
@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 @ViewScoped
 @Named
-public class CustomerController extends CrudTableController<Customer> {
+public class CustomerController extends CrudController<Customer> {
     @Inject
     private CustomerService service;
     

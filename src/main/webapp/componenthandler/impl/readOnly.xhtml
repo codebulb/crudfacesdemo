@@ -18,22 +18,31 @@
                 <p:outputLabel for="firstName" value="#{I18N['firstName']}"/>
                 <p:inputText id="firstName" value="#{readOnlyController.entity.firstName}"/>
                 <p:message for="firstName"/>
+                
                 <p:outputLabel for="lastName" value="#{I18N['lastName']}"/>
                 <p:inputText id="lastName" value="#{readOnlyController.entity.lastName}"/>
                 <p:message for="lastName"/>
+                
                 <p:outputLabel for="comment" value="#{I18N['comment']}"/>
                 <p:inputTextarea id="comment" value="#{readOnlyController.entity.comment}"/>
                 <p:message for="comment"/>
+                
                 <p:outputLabel for="premium" value="#{I18N['customer.premium']}"/>
                 <p:selectBooleanCheckbox id="premium" value="#{readOnlyController.entity.premium}"/>
                 <p:message for="premium"/>
+                
                 <p:outputLabel for="mainLanguage" value="#{I18N['language']}"/>
                 <p:selectOneMenu id="mainLanguage" value="#{readOnlyController.entity.mainLanguage}">
                     <f:selectItem value="#{null}" itemLabel="#{I18N['choose.']}"/>
-                    <f:selectItems var="item" value="#{Language:values()}" 
-                                   itemLabel="#{item}" />
+                    <f:selectItems var="item" value="#{Language:values()}" itemLabel="#{item}" />
                 </p:selectOneMenu>
                 <p:message for="mainLanguage"/>
+                
+                <p:outputLabel for="joinDate" value="#{I18N['customer.joinDate']}"/>
+                <p:calendar id="joinDate" value="#{readOnlyController.entity.joinDate}"
+                            pattern="#{i18n['format.calendar']}"/>
+                <p:message for="joinDate"/>
+            
                 <p:commandButton value="#{I18N['save']}" update="@form" 
                                  a:stealth="#{readOnlyController.readOnly}" />
                 <p:commandButton value="#{readOnlyController.controlText}"

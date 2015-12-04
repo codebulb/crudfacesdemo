@@ -8,7 +8,7 @@
     <h:body>
         <ui:composition template="/feature.xhtml">
             <ui:define name="title">StyleClassChangeRenderKit</ui:define>
-            <ui:define name="status-label"><demo:status value="P"/></ui:define>
+            <ui:define name="status-label"><demo:status value="W"/></ui:define>
             <ui:define name="breadcrumb">
                 <li>renderkit</li>
             </ui:define>
@@ -75,6 +75,15 @@
                     <p>Also make sure that you don’t override CrudFaces’ default faces-config.xml <code>&lt;context-param&gt;</code>
                         <code>primefaces.THEME</code> = <code>none</code>.</p>
                     
+                    <p><b>Note:</b> You need to manually include Bootstrap and Font Awesome CSS / JavaScript files in your
+                    XHTML pages, preferably in your Facelets template:</p>
+                    <pre class="brush:xml">
+&lt;h:outputStylesheet library=&quot;css&quot; name=&quot;bootstrap.min.css&quot;/&gt;
+&lt;h:outputStylesheet name=&quot;css/font-awesome.min.css&quot; /&gt;
+&lt;h:outputScript library=&quot;js&quot; name=&quot;bootstrap.min.js&quot; /&gt;
+                    </pre>
+                    <p>Bootstrap / Font Awesome files are <i>not</i> shipped as part of CrudFaces.</p>
+                    
                     <p>A few notes on specific components:</p>
                     <ul>
                         <li><code>&lt;commandButton&gt;</code> does not support inner HTML
@@ -92,14 +101,14 @@
                     
                     <h2>Known restrictions</h2>
                     <ul>
-                        <li>Only some basic PrimeFaces components are supported.</li>
+                        <li>Only basic PrimeFaces components are supported.</li>
                     </ul>
                     <ul>
                         <li>No support for customization.</li>
                     </ul>
                     <ul>
                         <li>DOM manipulations which re-introduce PrimeFaces components but which aren’t
-                            triggered by an onclick() event cannot be caught; however, there is no known case where
+                            triggered by an <code>onclick()</code> event cannot be caught; however, there is no known case where
                             this is a problem.</li>
                     </ul>
                     <p>These restrictions are most likely to be addressed and resolved in future CrudFaces versions.</p>

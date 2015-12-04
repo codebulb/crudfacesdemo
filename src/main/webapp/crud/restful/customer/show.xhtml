@@ -95,10 +95,14 @@
                         <p:outputLabel for="mainLanguage" value="#{I18N['language']}"/>
                         <p:selectOneMenu id="mainLanguage" value="#{entity.mainLanguage}">
                             <f:selectItem value="#{null}" itemLabel="#{I18N['choose.']}"/>
-                            <f:selectItems var="item" value="#{Language:values()}" 
-                                           itemLabel="#{item}" />
+                            <f:selectItems var="item" value="#{Language:values()}" itemLabel="#{item}" />
                         </p:selectOneMenu>
                         <p:message for="mainLanguage"/>
+                        
+                        <p:outputLabel for="joinDate" value="#{I18N['customer.joinDate']}"/>
+                        <p:calendar id="joinDate" value="#{entity.joinDate}"
+                                    pattern="#{i18n['format.calendar']}"/>
+                        <p:message for="joinDate"/>
 
                         <p:commandButton styleClass="btn-primary" id="saveAction" value="#{I18N['save']}" 
                                          a:stealth="#{not param.edit}"
