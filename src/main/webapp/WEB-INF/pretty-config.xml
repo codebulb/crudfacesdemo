@@ -5,18 +5,18 @@
      
     <url-mapping>
         <pattern value="/crud/restful/customers" />
-        <view-id value="/faces/crud/restful/customer/list.xhtml" />
+        <view-id value="/crud/restful/customer/list.xhtml" />
     </url-mapping>
     <url-mapping>
         <pattern value="/crud/restful/customers/#{/[0-9]+/ id}/edit" />
-        <view-id value="/faces/crud/restful/customer/show.xhtml?edit=true" />
+        <view-id value="/crud/restful/customer/show.xhtml?edit=true" />
     </url-mapping>
     <url-mapping>
         <pattern value="/crud/restful/customers/#{/[0-9]+/ id}" />
-        <view-id value="/faces/crud/restful/customer/show.xhtml" />
+        <view-id value="/crud/restful/customer/show.xhtml" />
     </url-mapping>
     <url-mapping>
         <pattern value="/crud/restful/customers/new" />
-        <view-id value="/faces/crud/restful/customer/show.xhtml?edit=true" />
+        <view-id value="/crud/restful/customer/show.xhtml?edit=true" />
     </url-mapping> 
 </pretty-config>
